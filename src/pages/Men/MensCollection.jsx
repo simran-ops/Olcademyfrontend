@@ -17,33 +17,33 @@ const MensCollection = () => {
   const [darkMode, setDarkMode] = useState(false);
   const { addToCart, isInCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
-  
+
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
+
   // State for products from backend
   const [collections, setCollections] = useState({
     just_arrived: [],
     best_sellers: [],
     huntsman_savile_row: []
   });
-  
+
   // State for banners from backend
   const [banners, setBanners] = useState({
     hero: null,
     product_highlight: [],
     collection_highlight: []
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // State for "View All" expanded sections
   const [expandedSections, setExpandedSections] = useState({
     just_arrived: false,
     best_sellers: false,
     huntsman_savile_row: false
   });
-  
+
   // UPDATED: Enhanced notification system matching HomePage
   const [notifications, setNotifications] = useState([]);
 
@@ -73,12 +73,12 @@ const MensCollection = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const [productsResponse, bannersResponse] = await Promise.all([
           ProductService.getMensCollections().catch(err => ({ success: false, error: err.message })),
           ProductService.getMensBanners().catch(err => ({ success: false, error: err.message }))
         ]);
-        
+
         if (productsResponse.success && productsResponse.data) {
           setCollections({
             just_arrived: productsResponse.data.just_arrived || [],
@@ -99,7 +99,7 @@ const MensCollection = () => {
             product_highlight: [],
             collection_highlight: []
           };
-          
+
           (bannersResponse.data || []).forEach(banner => {
             if (banner.type === 'hero') {
               bannersByType.hero = banner;
@@ -109,10 +109,10 @@ const MensCollection = () => {
               bannersByType.collection_highlight.push(banner);
             }
           });
-          
+
           setBanners(bannersByType);
         }
-        
+
       } catch (err) {
         console.error('Error fetching men\'s data:', err);
         setError(err.message);
@@ -166,7 +166,7 @@ const MensCollection = () => {
     const handleAddToCart = async (e) => {
       e.stopPropagation();
       setIsAddingToCart(true);
-      
+
       const cartItem = {
         id: product._id.toString(),
         name: product.name,
@@ -202,7 +202,7 @@ const MensCollection = () => {
 
       try {
         const wasInWishlist = isInWishlist(product._id);
-        
+
         const wishlistProduct = {
           id: product._id.toString(),
           name: product.name,
@@ -212,7 +212,7 @@ const MensCollection = () => {
           category: product.category || '',
           selectedSize: null
         };
-        
+
         toggleWishlist(wishlistProduct);
         // UPDATED: Pass 'wishlist' as actionType with product name
         addNotification(
@@ -258,23 +258,23 @@ const MensCollection = () => {
         whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
         transition={{ duration: 0.3 }}
         // className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px]"
-        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] min-h-0 sm:min-h-[528px]"
+        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px]"
         // style={{ height: 'auto', minHeight: '528px' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleCardClick}
       >
-        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3">
+        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
           <motion.img
             src={getProductImage()}
             alt={product.name || 'Product'}
-            className="object-contain w-full h-full max-w-[248px] max-h-[248px]"
+            className="object-contain w-full h-full max-w-[160px] sm:max-w-[220px] max-h-[160px] sm:max-h-[220px]"
             onError={(e) => handleImageError(e, isHovered ? 'hover' : 'primary')}
             animate={{ scale: isHovered ? 1.08 : 1 }}
             transition={{ duration: 0.4 }}
             loading="lazy"
           />
-          
+
           <motion.button
             onClick={handleWishlistToggle}
             whileHover={{ scale: 1.15 }}
@@ -289,27 +289,17 @@ const MensCollection = () => {
           </motion.button>
         </div>
 
-        <div className="px-3.5 py-3.5 flex flex-col gap-3.5">
-          {/* <h3 
-            className="font-bold uppercase text-center line-clamp-1 text-lg sm:text-xl md:text-2xl"
+        <div className="px-3 py-3 flex flex-col gap-2.5">
+          <h3
+            className="font-bold uppercase text-center line-clamp-2 text-sm sm:text-lg"
             style={{
               fontFamily: 'Playfair Display, serif',
               letterSpacing: '0.05em',
               color: '#5A2408'
             }}
           >
-            {product.name || 'Product'}
-          </h3> */}
-          <h3
-           className="font-bold uppercase text-center line-clamp-2 text-lg sm:text-xl md:text-2xl"
-            style={{
-            fontFamily: 'Playfair Display, serif',
-             letterSpacing: '0.05em',
-             color: '#5A2408'
-             }}
-             >
-              {product.name || 'Unnamed Gift'}
-             </h3>
+            {product.name || 'Unnamed Gift'}
+          </h3>
 
           <div className="flex items-center justify-center gap-1">
             {product.rating ? (
@@ -317,19 +307,19 @@ const MensCollection = () => {
                 {[...Array(5)].map((_, index) => (
                   <Star
                     key={index}
-                    size={14}
+                    size={12}
                     style={{ color: '#5A2408', fill: index < Math.floor(product.rating) ? '#5A2408' : 'transparent' }}
                     className={`${index < Math.floor(product.rating) ? '' : 'opacity-30'}`}
                   />
                 ))}
               </>
             ) : (
-              <div className="h-3.5"></div>
+              <div className="h-3"></div>
             )}
           </div>
 
-          <p 
-            className="text-center line-clamp-2 text-sm sm:text-base"
+          <p
+            className="text-center line-clamp-2 text-[10px] sm:text-xs"
             style={{
               fontFamily: 'Manrope, sans-serif',
               fontWeight: '500',
@@ -340,8 +330,8 @@ const MensCollection = () => {
             {product.description || 'Premium fragrance'}
           </p>
 
-          <p 
-            className="font-bold text-center text-lg sm:text-xl"
+          <p
+            className="font-bold text-center text-sm sm:text-base"
             style={{
               fontFamily: 'Manrope, sans-serif',
               letterSpacing: '0.02em',
@@ -352,22 +342,22 @@ const MensCollection = () => {
           </p>
 
           <motion.button
-            onClick={productInCart ? (e) => { 
-              e.stopPropagation(); 
+            onClick={productInCart ? (e) => {
+              e.stopPropagation();
               setIsCartOpen(true);
             } : handleAddToCart}
             disabled={isAddingToCart}
             whileHover={{ scale: 1.02, opacity: 0.9 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center justify-center gap-2 sm:gap-2.5 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[54px] sm:h-[60px] text-sm sm:text-base md:text-lg -mx-3.5 px-3.5"
+            className="flex items-center justify-center gap-2 sm:gap-2.5 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[40px] sm:h-[45px] text-xs sm:text-sm md:text-base -mx-3 px-3"
             style={{
               backgroundColor: productInCart ? '#431A06' : '#431A06',
               fontFamily: 'Manrope, sans-serif',
               letterSpacing: '0.05em',
-              width: 'calc(100% + 28px)'
+              width: 'calc(100% + 24px)'
             }}
           >
-            <ShoppingCart size={20} className="sm:w-[24px] sm:h-[24px]" />
+            <ShoppingCart size={16} className="sm:w-[18px] sm:h-[18px]" />
             <span>
               {isAddingToCart ? 'Adding...' : productInCart ? 'View Cart' : 'Add to Cart'}
             </span>
@@ -382,7 +372,7 @@ const MensCollection = () => {
   // Collection Section Component
   const CollectionSection = memo(({ title, products = [], sectionKey }) => {
     const isExpanded = expandedSections[sectionKey];
-    const displayProducts = useMemo(() => 
+    const displayProducts = useMemo(() =>
       isExpanded ? products : products.slice(0, 4),
       [isExpanded, products]
     );
@@ -391,7 +381,7 @@ const MensCollection = () => {
     return (
       <section className="py-10 sm:py-14 lg:py-16 px-4 sm:px-6 bg-[#F8F6F3] dark:bg-[#0d0603]">
         <div className="max-w-[1555px] mx-auto">
-          <motion.h3 
+          <motion.h3
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -403,18 +393,18 @@ const MensCollection = () => {
           >
             {title}
           </motion.h3>
-          
+
           {loading ? (
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 lg:h-28 lg:w-28 border-b-2 border-[#79300f]"></div>
             </div>
           ) : products && products.length > 0 ? (
             <>
-              <motion.div 
+              <motion.div
                 layout
-              //   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center"
-              // >
-              className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center">
+                //   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center"
+                // >
+                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center">
                 <AnimatePresence mode="popLayout">
                   {displayProducts.map((product) => {
                     if (!product || !product._id) return null;
@@ -431,7 +421,7 @@ const MensCollection = () => {
                     onClick={() => toggleSection(sectionKey)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
-                    className="border-2 transition-all duration-300  w-full max-w-[311px] h-[54px] sm:h-[60px] px-5 flex items-center justify-center"
+                    className="border-2 transition-all duration-300  w-full max-w-[250px] h-[40px] sm:h-[48px] px-5 flex items-center justify-center"
                     style={{
                       borderColor: '#431A06',
                       backgroundColor: 'transparent',
@@ -490,9 +480,9 @@ const MensCollection = () => {
           className="relative py-0 overflow-hidden"
         >
           <div className="relative h-[270px] sm:h-[360px] lg:h-[450px] bg-gradient-to-r from-black/50 to-transparent">
-            <img 
-              src={banner.backgroundImage ? ProductService.constructBannerURL(banner.backgroundImage) : '/images/baner1.jpeg'} 
-              alt={banner.altText || banner.title} 
+            <img
+              src={banner.backgroundImage ? ProductService.constructBannerURL(banner.backgroundImage) : '/images/baner1.jpeg'}
+              alt={banner.altText || banner.title}
               className="w-full h-full object-cover"
               onError={(e) => {
                 console.warn('Hero banner failed to load:', e.target.src);
@@ -511,7 +501,7 @@ const MensCollection = () => {
                 <p className="text-sm sm:text-base lg:text-lg mb-5 sm:mb-7 text-gray-200">
                   {banner.description}
                 </p>
-                <Button 
+                <Button
                   onClick={handleClick}
                   className="bg-gradient-to-r from-[#79300f] to-[#5a2408] hover:from-[#5a2408] hover:to-[#79300f] text-white px-5 sm:px-7 py-2.5 sm:py-3.5 text-sm sm:text-base font-semibold  shadow-lg hover:shadow-xl transition-all duration-300"
                 >
@@ -533,7 +523,7 @@ const MensCollection = () => {
           className="bg-[#F8F6F3] dark:bg-[#0d0603] py-10 sm:py-14 lg:py-16 px-4 sm:px-6"
         >
           <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-7 sm:gap-10 lg:gap-14 items-center">
-            <motion.div 
+            <motion.div
               className="text-left order-2 md:order-1"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -541,7 +531,7 @@ const MensCollection = () => {
               transition={{ duration: 0.6 }}
             >
               {banner.subtitle && (
-                <motion.h3 
+                <motion.h3
                   className="text-sm sm:text-base lg:text-lg text-[#79300f] dark:text-[#f6d110] font-semibold uppercase mb-2.5 sm:mb-3.5 tracking-wider"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -551,8 +541,8 @@ const MensCollection = () => {
                   {banner.subtitle}
                 </motion.h3>
               )}
-              <motion.h2 
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3.5 sm:mb-5 leading-[110%] text-[#271004] dark:text-[#f6d110]" 
+              <motion.h2
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3.5 sm:mb-5 leading-[110%] text-[#271004] dark:text-[#f6d110]"
                 style={{ fontFamily: 'Playfair Display, serif' }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -564,7 +554,7 @@ const MensCollection = () => {
                   {banner.titleHighlight}
                 </span>
               </motion.h2>
-              <motion.p 
+              <motion.p
                 className="text-base sm:text-lg mb-5 sm:mb-7 text-[#5a2408] dark:text-gray-300 leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -579,7 +569,7 @@ const MensCollection = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
               >
-                <Button 
+                <Button
                   onClick={handleClick}
                   className="bg-gradient-to-r from-[#79300f] to-[#5a2408] hover:from-[#5a2408] hover:to-[#79300f] text-white px-7 sm:px-9 py-3.5 sm:py-4.5 text-base sm:text-lg font-semibold  shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
                 >
@@ -588,7 +578,7 @@ const MensCollection = () => {
               </motion.div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="relative order-1 md:order-2 h-[400px]"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -601,8 +591,8 @@ const MensCollection = () => {
                 className="w-full h-full object-cover shadow-lg"
                 onError={(e) => {
                   console.warn('Banner image failed to load:', e.target.src);
-                  const altSrc = banner.backgroundImage 
-                    ? ProductService.constructBannerURL(banner.backgroundImage) 
+                  const altSrc = banner.backgroundImage
+                    ? ProductService.constructBannerURL(banner.backgroundImage)
                     : null;
                   if (altSrc && e.target.src !== altSrc) {
                     e.target.src = altSrc;
@@ -653,8 +643,8 @@ const MensCollection = () => {
                 className="w-full h-full object-cover shadow-lg"
                 onError={(e) => {
                   console.warn('Banner image failed to load:', e.target.src);
-                  const altSrc = banner.backgroundImage 
-                    ? ProductService.constructBannerURL(banner.backgroundImage) 
+                  const altSrc = banner.backgroundImage
+                    ? ProductService.constructBannerURL(banner.backgroundImage)
                     : null;
                   if (altSrc && e.target.src !== altSrc) {
                     e.target.src = altSrc;
@@ -696,7 +686,7 @@ const MensCollection = () => {
             }}
           >
             {/* Left Vertical Bar */}
-            <div 
+            <div
               style={{
                 position: 'absolute',
                 left: '16px',
@@ -708,7 +698,7 @@ const MensCollection = () => {
             />
 
             {/* Icon - Show correct icon based on actionType */}
-            <div 
+            <div
               style={{
                 position: 'absolute',
                 top: '30px',
@@ -769,9 +759,9 @@ const MensCollection = () => {
                 whiteSpace: 'nowrap'
               }}
             >
-              {notification.type === 'error' 
-                ? 'Error' 
-                : notification.actionType === 'wishlist' 
+              {notification.type === 'error'
+                ? 'Error'
+                : notification.actionType === 'wishlist'
                   ? (notification.message.includes('Removed') ? 'Removed from Wishlist' : 'Added to Wishlist')
                   : notification.actionType === 'cart'
                     ? 'Added to Cart'
@@ -814,13 +804,13 @@ const MensCollection = () => {
             <h2 className="text-xl sm:text-2xl font-bold mb-3.5">Failed to load content</h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-3.5">{error}</p>
             <div className="flex flex-col sm:flex-row gap-3.5 justify-center">
-              <Button 
+              <Button
                 onClick={() => window.location.reload()}
                 className="bg-[#79300f] text-white px-5 py-2  hover:bg-[#5a2408] transition-colors"
               >
                 Retry
               </Button>
-              <Button 
+              <Button
                 onClick={() => navigate('/')}
                 className="bg-gray-500 text-white px-5 py-2  hover:bg-gray-600 transition-colors"
               >
@@ -838,9 +828,9 @@ const MensCollection = () => {
     <div className="min-h-screen bg-[#F8F6F3] text-[#79300f] dark:bg-[#0d0603] dark:text-[#f6d110]">
       <Header darkMode={darkMode} setDarkMode={setDarkMode} />
       <NotificationSystem />
-      
+
       <ProductCartSection isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-      
+
       <main>
         {/* Hero Section */}
         <motion.section
@@ -850,8 +840,8 @@ const MensCollection = () => {
           viewport={{ once: false, amount: 0.4 }}
           className="text-center px-4 sm:px-6 py-10 sm:py-14 lg:py-16 bg-white dark:from-[#0d0603] dark:to-[#1a1410]"
         >
-          <motion.h1 
-            variants={fadeIn('up', 0.3)} 
+          <motion.h1
+            variants={fadeIn('up', 0.3)}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3.5 sm:mb-5 leading-[120%] text-[#271004] dark:text-[#f6d110]"
             style={{ fontFamily: 'Playfair Display, serif' }}
           >
@@ -872,9 +862,9 @@ const MensCollection = () => {
         )}
 
         {/* Just Arrived */}
-        <CollectionSection 
-          title="Just Arrived" 
-          products={collections.just_arrived} 
+        <CollectionSection
+          title="Just Arrived"
+          products={collections.just_arrived}
           sectionKey="just_arrived"
         />
 
@@ -884,9 +874,9 @@ const MensCollection = () => {
         ))}
 
         {/* Best Sellers */}
-        <CollectionSection 
-          title="Best Sellers" 
-          products={collections.best_sellers} 
+        <CollectionSection
+          title="Best Sellers"
+          products={collections.best_sellers}
           sectionKey="best_sellers"
         />
 
@@ -896,16 +886,16 @@ const MensCollection = () => {
         ))}
 
         {/* Huntsman Savile Row */}
-        <CollectionSection 
-          title="Huntsman Savile Row" 
-          products={collections.huntsman_savile_row} 
+        <CollectionSection
+          title="Huntsman Savile Row"
+          products={collections.huntsman_savile_row}
           sectionKey="huntsman_savile_row"
         />
       </main>
-      
+
       <Footer />
     </div>
   );
 };
 
-export default MensCollection;
+export default MensCollection;

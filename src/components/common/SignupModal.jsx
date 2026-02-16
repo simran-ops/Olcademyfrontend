@@ -1,8 +1,9 @@
 // components/SignupModal.jsx
 import React, { useState, useContext } from 'react';
-import perfumeImage from '../../../public/images/Rectangle 58.png';
 import { AuthContext } from '@/context/AuthContext';
 import { Loader2, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
+
+const perfumeImage = "/images/women.png";
 
 const SignupModal = ({ isOpen, onClose, openLogin, openVerify, setEmail }) => {
   if (!isOpen) return null;
@@ -81,7 +82,7 @@ const SignupModal = ({ isOpen, onClose, openLogin, openVerify, setEmail }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -91,7 +92,7 @@ const SignupModal = ({ isOpen, onClose, openLogin, openVerify, setEmail }) => {
 
     try {
       const result = await register(input.username, input.email, input.password);
-      
+
       if (result.success) {
         setMessage({ type: 'success', text: result.message });
         setEmail(input.email);
@@ -126,18 +127,18 @@ const SignupModal = ({ isOpen, onClose, openLogin, openVerify, setEmail }) => {
       <div className="bg-white w-full max-w-5xl max-h-[90vh] rounded-2xl overflow-hidden flex shadow-2xl">
         {/* Left Side Image */}
         <div className="hidden md:block md:w-1/2 min-h-full relative">
-        <img
-           src={perfumeImage}
-           alt="Perfume"
-           className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-      </div>
+          <img
+            src={perfumeImage}
+            alt="Perfume"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </div>
 
 
         {/* Right Side Form */}
         <div className="w-full md:w-1/2 bg-gradient-to-br from-[#f8f5f1] to-white p-10 flex flex-col overflow-y-auto max-h-[90vh]">
-         {/* Header */}
+          {/* Header */}
           <div className="text-center mb-6 pt-2">
             <h2 className=" text-3xl font-bold text-[#79300f] mb-2">Vesarii</h2>
             <h3 className="text-xl font-semibold text-[#79300f] mb-2">Join Our Scented World</h3>
@@ -148,11 +149,10 @@ const SignupModal = ({ isOpen, onClose, openLogin, openVerify, setEmail }) => {
 
           {/* Message Display */}
           {message.text && (
-            <div className={`mb-4 p-3 rounded-lg flex items-center gap-2 ${
-              message.type === 'error' 
-                ? 'bg-red-50 text-red-600 border border-red-200' 
-                : 'bg-green-50 text-green-600 border border-green-200'
-            }`}>
+            <div className={`mb-4 p-3 rounded-lg flex items-center gap-2 ${message.type === 'error'
+              ? 'bg-red-50 text-red-600 border border-red-200'
+              : 'bg-green-50 text-green-600 border border-green-200'
+              }`}>
               {message.type === 'error' ? (
                 <AlertCircle className="w-5 h-5" />
               ) : (
@@ -271,7 +271,7 @@ const SignupModal = ({ isOpen, onClose, openLogin, openVerify, setEmail }) => {
           <div className="mt-6 space-y-3">
             <div className="text-center text-sm">
               <span className="text-gray-600">Already have an account? </span>
-              <button 
+              <button
                 onClick={handleOpenLogin}
                 className="text-[#79300f] font-semibold hover:text-[#b14527] transition-colors"
                 disabled={loading}

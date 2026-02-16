@@ -27,22 +27,24 @@ const HeroSection = () => {
     navigate('/about-page');
   };
 
-const handleClickDiscover = () => {
+  const handleClickDiscover = () => {
     navigate('/discover-collection');
   }
   return (
     <section
       className="w-full bg-[#F9F7F6]"
-      style={{ minHeight: '0',
-               width: '100%',
-       }}
+      style={{
+        minHeight: '0',
+        width: '100%',
+      }}
     >
       {/* Unified hero with image + overlay + content */}
       <div
         className="relative w-full max-w-[1728px] mx-auto"
-        style={{ height: '490px',
-                 width: '100%'
-         }}
+        style={{
+          height: '380px',
+          width: '100%'
+        }}
       >
         {/* Background image (carousel) with crossfade */}
         <div className="absolute inset-0 w-full h-full">
@@ -75,12 +77,12 @@ const handleClickDiscover = () => {
         {/* Left-aligned content */}
         <div
           className="absolute flex flex-col items-start justify-center"
-          style={{ left: '63px', top: '150px', width: '640px', gap: '24px', zIndex: 2 }}
+          style={{ left: '63px', top: '100px', width: '640px', gap: '16px', zIndex: 2 }}
         >
           <h1
             className="font-[Playfair] font-bold"
             style={{
-              fontSize: '50px',
+              fontSize: '36px',
               lineHeight: '120%',
               color: '#FFFFFF',
               textAlign: 'left',
@@ -93,7 +95,7 @@ const handleClickDiscover = () => {
           <p
             className="font-[Manrope] font-normal"
             style={{
-              fontSize: '18px',
+              fontSize: '14px',
               lineHeight: '150%',
               color: '#F9F7F6',
               textAlign: 'left',
@@ -110,29 +112,29 @@ const handleClickDiscover = () => {
             style={{
               gap: '12px',
               marginTop: '0',
-              height: '40px'
+              height: '36px'
             }}
           >
             <button
               onClick={handleClickDiscover}
               className="font-[Manrope] font-normal uppercase"
               style={{
-                width: '190px',
-                height: '40px',
+                width: '160px',
+                height: '36px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 background: '#CDAF6E',
                 color: '#341405',
-                fontSize: '14px',
+                fontSize: '12px',
                 lineHeight: '150%',
                 letterSpacing: '0%',
                 border: '1px solid #EFDB94',
                 borderRadius: '0px',
-                paddingTop: '10px',
-                paddingBottom: '10px',
-                paddingLeft: '24px',
-                paddingRight: '24px',
+                paddingTop: '8px',
+                paddingBottom: '8px',
+                paddingLeft: '16px',
+                paddingRight: '16px',
                 whiteSpace: 'nowrap',
                 boxSizing: 'border-box',
                 cursor: 'pointer',

@@ -1,12 +1,12 @@
 .perfumeSlideAnimation {
   width: 100%;
-  height: 310px;
-  /* Reduced to 310px to minimize bottom whitespace */
+  height: 260px;
+  /* Reduced to 260px */
   position: relative;
   background-color: transparent;
   overflow: hidden;
   text-align: center;
-  font-size: 11.29px;
+  font-size: 10px;
   color: #5a2408;
   font-family: Playfair, serif;
 }
@@ -62,8 +62,8 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 /* Title */
@@ -83,74 +83,73 @@
 
 /* 
    POSITIONS: 0 is center. 
-   Cards reduced by ~30%.
-   Padding added to ensure no overlap.
+   Cards reduced further.
 */
 
 /* CENTER (0) */
-/* Original: 320x420. New (approx -28%): 230x300 */
+/* New: 180x240 */
 .pos0 {
-  width: 230px;
-  height: 300px;
-  top: calc(50% - 150px);
-  left: calc(50% - 115px);
+  width: 180px;
+  height: 240px;
+  top: calc(50% - 120px);
+  left: calc(50% - 90px);
   z-index: 50;
   opacity: 1;
-  font-size: 20px;
-  padding: 12px;
-  box-shadow: 0px 0px 15px rgba(121, 48, 15, 0.3);
+  font-size: 16px;
+  padding: 10px;
+  box-shadow: 0px 0px 12px rgba(121, 48, 15, 0.3);
 }
 
 /* LEVEL 1 (+/- 1) */
-/* Original: 260x380. New: 180x260 */
-/* Gap: Center half (115) + padding (20) = 135 start */
+/* New: 140x200 */
+/* Gap: Center half (90) + padding (15) = 105 start */
 .pos1 {
-  width: 180px;
-  height: 260px;
-  top: calc(50% - 130px);
-  left: calc(50% + 135px);
+  width: 140px;
+  height: 200px;
+  top: calc(50% - 100px);
+  left: calc(50% + 105px);
   z-index: 40;
   opacity: 0.9;
-  font-size: 16px;
-  padding: 10px;
+  font-size: 13px;
+  padding: 8px;
 }
 
 .posNegative1 {
-  width: 180px;
-  height: 260px;
-  top: calc(50% - 130px);
-  left: calc(50% - 315px);
-  /* -115 (center half) - 20 (gap) - 180 (width) */
+  width: 140px;
+  height: 200px;
+  top: calc(50% - 100px);
+  left: calc(50% - 245px);
+  /* -90 (center half) - 15 (gap) - 140 (width) */
   z-index: 40;
   opacity: 0.9;
-  font-size: 16px;
-  padding: 10px;
+  font-size: 13px;
+  padding: 8px;
 }
 
 /* LEVEL 2 (+/- 2) */
-/* Original: 220x340. New: 150x220 */
-/* Gap from pos1: pos1 start (135) + pos1 width (180) + gap (20) = 335 start */
+/* New: 110x170 */
+/* Gap from pos1: pos1 start (105) + pos1 width (140) + gap (15) = 260 start */
 .pos2 {
-  width: 150px;
-  height: 220px;
-  top: calc(50% - 110px);
-  left: calc(50% + 335px);
+  width: 110px;
+  height: 170px;
+  top: calc(50% - 85px);
+  left: calc(50% + 260px);
   z-index: 30;
   opacity: 0.7;
-  font-size: 14px;
-  padding: 8px;
+  font-size: 11px;
+  padding: 6px;
 }
 
 .posNegative2 {
-  width: 150px;
-  height: 220px;
-  top: calc(50% - 110px);
-  left: calc(50% - 485px);
-  /* -315 (pos1 start) - 20 (gap) - 150 (width) = -485 */
+  width: 110px;
+  height: 170px;
+  top: calc(50% - 85px);
+  left: calc(50% - 370px);
+  /* -245 (pos1 start) - 15 (gap) - 110 (width) = -370 */
   z-index: 30;
   opacity: 0.7;
-  font-size: 14px;
-  padding: 8px;
+  font-size: 11px;
+  padding: 6px;
 }
 
 /* Responsive Handling */

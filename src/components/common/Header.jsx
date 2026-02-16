@@ -31,8 +31,8 @@ const Header = ({ darkMode, setDarkMode }) => {
   const [showLogoutNotification, setShowLogoutNotification] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const INITIAL_HEIGHT = 197;
-  const STICKY_HEIGHT = 120;
+  const INITIAL_HEIGHT = 120;
+  const STICKY_HEIGHT = 80;
   const MOBILE_HEIGHT = 'auto';
   const SCROLL_THRESHOLD = 50;
 
@@ -107,18 +107,18 @@ const Header = ({ darkMode, setDarkMode }) => {
 
   const currentHeight = isMobile ? MOBILE_HEIGHT : (isScrolled ? STICKY_HEIGHT : INITIAL_HEIGHT);
 
-  const logoTop = isScrolled ? '28px' : '20px';
-  const logoLeft = isScrolled ? '52px' : '50%';
+  const logoTop = isScrolled ? '18px' : '15px';
+  const logoLeft = isScrolled ? '40px' : '50%';
   const logoTransform = isScrolled ? 'translateX(0%)' : 'translateX(-50%)';
 
-  const navLayerTop = isScrolled ? '22px' : '116px';
-  const iconLayerTop = isScrolled ? '26px' : '86px';
+  const navLayerTop = isScrolled ? '18px' : '75px';
+  const iconLayerTop = isScrolled ? '22px' : '55px';
 
-  const navFontSize = isScrolled ? '18px' : '20px';
-  const navPadding = isScrolled ? '2px 8px' : '12px 8px';
-  const navMinWidth = isScrolled ? '80px' : '120px';
+  const navFontSize = isScrolled ? '13px' : '14px';
+  const navPadding = isScrolled ? '2px 6px' : '8px 6px';
+  const navMinWidth = isScrolled ? '60px' : '90px';
 
-  const spacerHeight = isMobile ? 120 : INITIAL_HEIGHT;
+  const spacerHeight = isMobile ? 100 : INITIAL_HEIGHT;
 
   return (
     <>
@@ -237,7 +237,7 @@ const Header = ({ darkMode, setDarkMode }) => {
               className="absolute flex items-center transition-all duration-300"
               style={{
                 width: isScrolled ? 'auto' : '80px',
-                height: '60px',
+                height: '40px',
                 top: logoTop,
                 left: logoLeft,
                 transform: logoTransform,
@@ -249,15 +249,15 @@ const Header = ({ darkMode, setDarkMode }) => {
                 <button
                   onClick={toggleSearch}
                   style={{
-                    width: '28px',
-                    height: '28px',
+                    width: '24px',
+                    height: '24px',
                     color: '#341405',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}
                 >
-                  <FiSearch size={28} />
+                  <FiSearch size={22} />
                 </button>
               )}
               <Link to="/">
@@ -266,7 +266,7 @@ const Header = ({ darkMode, setDarkMode }) => {
                   alt="Logo"
                   animate={{ scale: isScrolled ? 0.78 : 1 }}
                   transition={{ duration: 0.25 }}
-                  style={{ width: '120px', height: '60px', objectFit: 'contain' }}
+                  style={{ width: '90px', height: '45px', objectFit: 'contain' }}
                 />
               </Link>
             </div>
@@ -304,43 +304,43 @@ const Header = ({ darkMode, setDarkMode }) => {
                   <button
                     onClick={toggleSearch}
                     style={{
-                      width: '34px',
-                      height: '34px',
+                      width: '26px',
+                      height: '26px',
                       color: '#341405'
                     }}
                   >
-                    <FiSearch size={34} />
+                    <FiSearch size={24} />
                   </button>
                 )}
               </div>
 
-              <div className="flex items-center" style={{ gap: '28px' }}>
+              <div className="flex items-center" style={{ gap: '22px' }}>
                 <Link
                   to="/wishlist-collection"
                   style={{
-                    width: '34px',
-                    height: '34px',
+                    width: '26px',
+                    height: '26px',
                     color: '#341405',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}
                 >
-                  <FiHeart size={34} />
+                  <FiHeart size={24} />
                 </Link>
 
                 <button
                   onClick={openCart}
                   style={{
-                    width: '34px',
-                    height: '34px',
+                    width: '26px',
+                    height: '26px',
                     color: '#341405',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}
                 >
-                  <FiShoppingCart size={34} />
+                  <FiShoppingCart size={24} />
                 </button>
 
                 {user ? (
@@ -348,17 +348,18 @@ const Header = ({ darkMode, setDarkMode }) => {
                     <button
                       onClick={toggleUserDropdown}
                       style={{
-                        width: '34px',
-                        height: '34px'
+                        width: '26px',
+                        height: '26px'
                       }}
                     >
                       <div
                         className="rounded-full flex items-center justify-center"
                         style={{
-                          width: '34px',
-                          height: '34px',
+                          width: '26px',
+                          height: '26px',
                           backgroundColor: '#341405',
-                          color: '#fff'
+                          color: '#fff',
+                          fontSize: '12px'
                         }}
                       >
                         {user.username ? user.username.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
@@ -409,15 +410,15 @@ const Header = ({ darkMode, setDarkMode }) => {
                   <button
                     onClick={() => setIsSignupOpen(true)}
                     style={{
-                      width: '34px',
-                      height: '34px',
+                      width: '26px',
+                      height: '26px',
                       color: '#341405',
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center'
                     }}
                   >
-                    <FiUser size={34} />
+                    <FiUser size={24} />
                   </button>
                 )}
               </div>
@@ -433,7 +434,7 @@ const Header = ({ darkMode, setDarkMode }) => {
                 transform: 'translateX(0)',
                 justifyContent: 'center',
                 gap: '12px',
-                height: '60px',
+                height: '40px',
                 pointerEvents: 'auto',
                 zIndex: 10000
               }}
@@ -617,7 +618,7 @@ const Header = ({ darkMode, setDarkMode }) => {
             exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 0.3 }}
             className="fixed top-24 right-8 bg-green-600 text-white px-6 py-4 shadow-2xl flex items-center gap-3 z-[10060]"
-            style={{ 
+            style={{
               zIndex: 10060,
               borderRadius: '8px'
             }}

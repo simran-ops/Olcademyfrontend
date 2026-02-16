@@ -284,19 +284,19 @@ const WomensCollection = () => {
     //     onClick={handleCardClick}
     //   >
     return (
-  <motion.div
-    layout
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
-    transition={{ duration: 0.3 }}
-    className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] min-h-0 sm:min-h-[528px]"
-    onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
-    onClick={handleCardClick}
-  >
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
+        transition={{ duration: 0.3 }}
+        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={handleCardClick}
+      >
         {/* Image Container */}
-        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3">
+        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
           {imageLoading && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="animate-spin  h-8 w-8 border-b-2 border-[#79300f]"></div>
@@ -305,7 +305,7 @@ const WomensCollection = () => {
           <motion.img
             src={getProductImage()}
             alt={product.name || 'Product'}
-            className={`object-contain w-full h-full max-w-[248px] max-h-[248px] ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+            className={`object-contain w-full h-full max-w-[160px] sm:max-w-[220px] max-h-[160px] sm:max-h-[220px] ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
             onError={(e) => handleImageError(e, isHovered ? 'hover' : 'primary')}
             onLoad={handleImageLoad}
             animate={{ scale: isHovered ? 1.08 : 1 }}
@@ -329,9 +329,9 @@ const WomensCollection = () => {
         </div>
 
         {/* Product Info Container */}
-        <div className="px-3.5 py-3.5 flex flex-col gap-3.5">
-          {/* <h3
-            className="font-bold uppercase text-center line-clamp-1 text-lg sm:text-xl md:text-2xl"
+        <div className="px-3 py-3 flex flex-col gap-2.5 flex-grow">
+          <h3
+            className="font-bold uppercase text-center line-clamp-2 text-sm sm:text-lg"
             style={{
               fontFamily: 'Playfair Display, serif',
               letterSpacing: '0.05em',
@@ -339,17 +339,7 @@ const WomensCollection = () => {
             }}
           >
             {product.name || 'Unnamed Gift'}
-          </h3> */}
-            <h3
-            className="font-bold uppercase text-center line-clamp-2 sm:line-clamp-1 text-lg sm:text-xl md:text-2xl min-h-[3rem] sm:min-h-0"
-              style={{
-               fontFamily: 'Playfair Display, serif',
-                letterSpacing: '0.05em',
-                   color: '#5A2408'
-  }}
-          >
-            {product.name || 'Unnamed Gift'}
-</h3>
+          </h3>
 
           <div className="flex items-center justify-center gap-1">
             {product.rating ? (
@@ -357,19 +347,19 @@ const WomensCollection = () => {
                 {[...Array(5)].map((_, index) => (
                   <Star
                     key={index}
-                    size={14}
+                    size={12}
                     style={{ color: '#5A2408', fill: index < Math.floor(product.rating) ? '#5A2408' : 'transparent' }}
                     className={`${index < Math.floor(product.rating) ? '' : 'opacity-30'}`}
                   />
                 ))}
               </>
             ) : (
-              <div className="h-3.5"></div>
+              <div className="h-3"></div>
             )}
           </div>
 
           <p
-            className="text-center line-clamp-2 text-sm sm:text-base"
+            className="text-center line-clamp-2 text-[10px] sm:text-xs"
             style={{
               fontFamily: 'Manrope, sans-serif',
               fontWeight: '500',
@@ -381,7 +371,7 @@ const WomensCollection = () => {
           </p>
 
           <p
-            className="font-bold text-center text-lg sm:text-xl"
+            className="font-bold text-center text-sm sm:text-base"
             style={{
               fontFamily: 'Manrope, sans-serif',
               letterSpacing: '0.02em',
@@ -399,15 +389,15 @@ const WomensCollection = () => {
             disabled={isAddingToCart}
             whileHover={{ scale: 1.02, opacity: 0.9 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center justify-center gap-2 sm:gap-2.5 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[54px] sm:h-[60px] text-sm sm:text-base md:text-lg -mx-3.5 px-3.5"
+            className="flex items-center justify-center gap-2 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[40px] sm:h-[45px] text-[10px] sm:text-xs md:text-sm -mx-3 px-3 mt-auto"
             style={{
               backgroundColor: productInCart ? '#431A06' : '#431A06',
               fontFamily: 'Manrope, sans-serif',
               letterSpacing: '0.05em',
-              width: 'calc(100% + 28px)'
+              width: 'calc(100% + 24px)'
             }}
           >
-            <ShoppingCart size={20} className="sm:w-[24px] sm:h-[24px]" />
+            <ShoppingCart size={16} className="sm:w-[18px] sm:h-[18px]" />
             <span>
               {isAddingToCart ? 'Adding...' : productInCart ? 'View Cart' : 'Add to Cart'}
             </span>
@@ -452,8 +442,8 @@ const WomensCollection = () => {
             <>
               <motion.div
                 layout
-              //   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center"
-                  className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center" >
+                //   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center"
+                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center" >
                 <AnimatePresence mode="popLayout">
                   {displayProducts.map(product => {
                     if (!product || !product._id) return null;
@@ -468,7 +458,7 @@ const WomensCollection = () => {
                     onClick={() => toggleSection(sectionKey)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
-                    className="border-2 transition-all duration-300  w-full max-w-[311px] h-[54px] sm:h-[60px] px-5 flex items-center justify-center"
+                    className="border-2 transition-all duration-300  w-full max-w-[250px] h-[40px] sm:h-[48px] px-5 flex items-center justify-center"
                     style={{
                       borderColor: '#431A06',
                       backgroundColor: 'transparent',
@@ -515,8 +505,8 @@ const WomensCollection = () => {
         window.location.href = banner.buttonLink;
       }
     };
-      const rawBannerSrc = banner.image || banner.backgroundImage;
-      const bannerImage = rawBannerSrc ? ProductService.constructBannerURL(rawBannerSrc) : '/images/newimg1.PNG';
+    const rawBannerSrc = banner.image || banner.backgroundImage;
+    const bannerImage = rawBannerSrc ? ProductService.constructBannerURL(rawBannerSrc) : '/images/newimg1.PNG';
 
     if (type === 'hero') {
       return (
@@ -527,14 +517,14 @@ const WomensCollection = () => {
           className="relative py-0 overflow-hidden"
         >
           <div className="relative h-[270px] sm:h-[360px] lg:h-[450px] bg-gradient-to-r from-black/50 to-transparent">
-              <img
-                src={banner.backgroundImage ? ProductService.constructBannerURL(banner.backgroundImage) : '/images/baner2.jpeg'}
+            <img
+              src={banner.backgroundImage ? ProductService.constructBannerURL(banner.backgroundImage) : '/images/baner2.jpeg'}
               alt={banner.altText || banner.title}
               className="w-full h-full object-cover"
-                onError={(e) => {
-                  console.warn('Hero banner failed to load:', e.target.src);
-                  e.target.src = '/images/baner2.jpeg';
-                }}
+              onError={(e) => {
+                console.warn('Hero banner failed to load:', e.target.src);
+                e.target.src = '/images/baner2.jpeg';
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
             <div className="absolute inset-0 flex items-center justify-start px-5 sm:px-7 lg:px-10">
@@ -769,12 +759,12 @@ const WomensCollection = () => {
               {notification.type === 'error'
                 ? 'Error'
                 : notification.actionType === 'wishlist'
-                ? notification.message.includes('Removed')
-                  ? 'Removed from Wishlist'
-                  : 'Added to Wishlist'
-                : notification.actionType === 'cart'
-                ? 'Added to Cart'
-                : 'Success'}
+                  ? notification.message.includes('Removed')
+                    ? 'Removed from Wishlist'
+                    : 'Added to Wishlist'
+                  : notification.actionType === 'cart'
+                    ? 'Added to Cart'
+                    : 'Success'}
             </div>
 
             {/* Product Name or message */}
