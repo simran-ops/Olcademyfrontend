@@ -20,7 +20,7 @@ const SearchResults = () => {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [allProducts, setAllProducts] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
@@ -28,7 +28,7 @@ const SearchResults = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
+
   const [filters, setFilters] = useState({
     category: '',
     priceRange: { min: 0, max: 1000 },
@@ -62,30 +62,30 @@ const SearchResults = () => {
 
 
   const fetchSearchResults = async () => {
-  setIsLoading(true);
+    setIsLoading(true);
 
-  try {
-    const res = await ProductService.searchProducts(searchQuery);
+    try {
+      const res = await ProductService.searchProducts(searchQuery);
 
-    const mergedResults = [
-      ...(res.products || []),
-      ...(res.scents || [])
-    ];
+      const mergedResults = [
+        ...(res.products || []),
+        ...(res.scents || [])
+      ];
 
-    setAllProducts(mergedResults);
-  } catch (err) {
-    console.error("Search failed", err);
-    setAllProducts([]);
-  } finally {
-    setIsLoading(false);
-  }
-};
+      setAllProducts(mergedResults);
+    } catch (err) {
+      console.error("Search failed", err);
+      setAllProducts([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const fetchAllProducts = async () => {
     setIsLoading(true);
     try {
       console.log('🔍 Fetching all products...');
-      
+
       // Fetch all products without any filters
       const response = await ProductService.getAllProducts({
         limit: 500 // Get all products
@@ -120,7 +120,7 @@ const SearchResults = () => {
         const nameMatch = product.name?.toLowerCase().includes(searchTerm);
         const brandMatch = product.brand?.toLowerCase().includes(searchTerm);
         // const descriptionMatch = product.description?.toLowerCase().includes(searchTerm);
-        return nameMatch || brandMatch ; //|| descriptionMatch;
+        return nameMatch || brandMatch; //|| descriptionMatch;
       });
       console.log(`🔍 After search filter (${searchQuery}): ${filtered.length} products`);
     }
@@ -130,12 +130,12 @@ const SearchResults = () => {
       filtered = filtered.filter(product => {
         const productCategory = product.category?.toLowerCase();
         const filterCategory = filters.category.toLowerCase();
-        
+
         // Handle both singular and plural forms, and 'gift' vs 'gifts'
         if (filterCategory === 'gift' || filterCategory === 'gifts') {
           return productCategory === 'gift' || productCategory === 'gifts';
         }
-        
+
         return productCategory === filterCategory;
       });
       console.log(`🏷️ After category filter (${filters.category}): ${filtered.length} products`);
@@ -202,7 +202,7 @@ const SearchResults = () => {
     if (!product) return null;
 
     const productInCart = isInCart(
-      product._id?.toString(), 
+      product._id?.toString(),
       product.sizes && product.sizes.length > 0 ? product.sizes[0].size : null
     );
 
@@ -302,14 +302,13 @@ const SearchResults = () => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
         transition={{ duration: 0.3 }}
-        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px]"
-        style={{ height: 'auto', minHeight: '528px' }}
+        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleCardClick}
       >
         {/* Image Container with Wishlist Icon */}
-        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3">
+        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
           <motion.img
             src={getProductImage()}
             alt={product.name || 'Product'}
@@ -394,8 +393,8 @@ const SearchResults = () => {
 
           {/* Add to Cart Button */}
           <motion.button
-            onClick={productInCart ? (e) => { 
-              e.stopPropagation(); 
+            onClick={productInCart ? (e) => {
+              e.stopPropagation();
               setIsCartOpen(true);
             } : handleAddToCart}
             disabled={isAddingToCart}
@@ -430,11 +429,10 @@ const SearchResults = () => {
             initial={{ opacity: 0, x: 100, scale: 0.8 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 100, scale: 0.8 }}
-            className={`p-4 rounded-2xl shadow-lg backdrop-blur-sm border max-w-sm ${
-              notification.type === 'success' 
-                ? 'bg-green-500/90 text-white border-green-400' 
+            className={`p-4 rounded-2xl shadow-lg backdrop-blur-sm border max-w-sm ${notification.type === 'success'
+                ? 'bg-green-500/90 text-white border-green-400'
                 : 'bg-red-500/90 text-white border-red-400'
-            }`}
+              }`}
           >
             <div className="flex items-center space-x-3">
               {notification.type === 'success' ? (
@@ -454,10 +452,10 @@ const SearchResults = () => {
     <div className="min-h-screen bg-[#F8F6F3] dark:bg-[#0d0603]">
       <Header darkMode={darkMode} setDarkMode={setDarkMode} />
       <NotificationSystem />
-      
+
       {/* Cart Sidebar */}
       <ProductCartSection isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-      
+
       <main className="max-w-[1555px] mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
         <motion.div
           variants={fadeIn('up', 0.2)}
@@ -465,7 +463,7 @@ const SearchResults = () => {
           animate="show"
           className="mb-8"
         >
-          <h1 
+          <h1
             className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-center"
             style={{
               fontFamily: 'Playfair Display, serif',
@@ -474,7 +472,7 @@ const SearchResults = () => {
           >
             Search Results
           </h1>
-          
+
           <form onSubmit={handleSearch} className="flex gap-4 mb-6 max-w-3xl mx-auto">
             <input
               type="text"
@@ -498,16 +496,16 @@ const SearchResults = () => {
           </form>
 
           <div className="max-w-7xl mx-auto">
-            <p 
+            <p
               className="text-base sm:text-lg text-center"
               style={{
                 fontFamily: 'Manrope, sans-serif',
                 color: darkMode ? '#f6d110' : '#5A2408'
               }}
             >
-              {isLoading ? 'Searching...' : 
-               searchQuery ? `Found ${filteredResults.length} results for "${searchQuery}"` :
-               `Showing ${filteredResults.length} products`
+              {isLoading ? 'Searching...' :
+                searchQuery ? `Found ${filteredResults.length} results for "${searchQuery}"` :
+                  `Showing ${filteredResults.length} products`
               }
             </p>
           </div>
@@ -531,7 +529,7 @@ const SearchResults = () => {
           >
             <div className="bg-white dark:bg-[#1a1410] p-6 rounded-2xl shadow-lg border-2 border-[#D4C5A9] lg:sticky lg:top-4">
               <div className="flex items-center justify-between mb-4">
-                <h3 
+                <h3
                   className="font-bold text-xl"
                   style={{
                     fontFamily: 'Playfair Display, serif',
@@ -551,7 +549,7 @@ const SearchResults = () => {
 
               {/* Category Filter */}
               <div className="mb-6">
-                <label 
+                <label
                   className="block font-semibold mb-2"
                   style={{ fontFamily: 'Manrope, sans-serif', color: darkMode ? '#f6d110' : '#271004' }}
                 >
@@ -574,7 +572,7 @@ const SearchResults = () => {
 
               {/* Price Range Filter */}
               <div className="mb-6">
-                <label 
+                <label
                   className="block font-semibold mb-2"
                   style={{ fontFamily: 'Manrope, sans-serif', color: darkMode ? '#f6d110' : '#271004' }}
                 >
@@ -592,7 +590,7 @@ const SearchResults = () => {
                     })}
                     className="w-full accent-[#431A06]"
                   />
-                  <div 
+                  <div
                     className="flex justify-between text-sm"
                     style={{ fontFamily: 'Manrope, sans-serif', color: darkMode ? '#f6d110' : '#5A2408' }}
                   >
@@ -604,7 +602,7 @@ const SearchResults = () => {
 
               {/* Sort By */}
               <div className="mb-4">
-                <label 
+                <label
                   className="block font-semibold mb-2"
                   style={{ fontFamily: 'Manrope, sans-serif', color: darkMode ? '#f6d110' : '#271004' }}
                 >
@@ -648,7 +646,7 @@ const SearchResults = () => {
                 <div className="mb-4">
                   <FiX size={64} className="mx-auto text-gray-400" />
                 </div>
-                <h3 
+                <h3
                   className="text-2xl font-bold mb-2"
                   style={{
                     fontFamily: 'Playfair Display, serif',
@@ -657,14 +655,14 @@ const SearchResults = () => {
                 >
                   No Results Found
                 </h3>
-                <p 
+                <p
                   className="mb-6"
                   style={{
                     fontFamily: 'Manrope, sans-serif',
                     color: darkMode ? '#f6d110' : '#5A2408'
                   }}
                 >
-                  {searchQuery 
+                  {searchQuery
                     ? `No products found matching "${searchQuery}"`
                     : "No products match your current filters"
                   }
@@ -710,7 +708,7 @@ const SearchResults = () => {
 
         {/* Mobile filter overlay */}
         {showFilters && (
-          <div 
+          <div
             className="lg:hidden fixed inset-0 bg-black/50 z-30"
             onClick={() => setShowFilters(false)}
           />

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback, memo, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/common/Header';
 import Footer from '@/components/common/Footer';
+import CollectionHero from '../components/common/CollectionHero';
+
 import Button from '../components/ui/Button';
 import ProductCartSection from '../pages/ProductCartSection'; // ADD THIS IMPORT
 import { motion, AnimatePresence } from 'framer-motion';
@@ -537,7 +539,7 @@ const GiftCollection = () => {
       subtitle: 'Premium Collection',
       description: 'From the crisp of the tissue paper to the last loop of the bow, it has to be just right. Whether it\'s a token of appreciation or the grandest of gestures.',
       buttonText: 'Shop Now',
-      buttonLink: '#collections',
+      buttonLink: '#collection-for_her',
       backgroundImage: '/images/gift-hero-bg.jpg'
     };
 
@@ -1131,16 +1133,31 @@ const GiftCollection = () => {
             <NotificationSystem />
             <QuickViewModal />
 
-            {/* CART SIDEBAR - ADD THIS */}
             <ProductCartSection isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
-            <HeroBanner banner={banners.hero} />
+            {/* Hero Section */}
+            {banners.hero ? (
+              <DynamicBanner banner={banners.hero} type="hero" />
+            ) : (
+              <CollectionHero
+                banner={{
+                  title: "Luxury Gifts",
+                  subtitle: "Premium Collection",
+                  description: "From the crisp of the tissue paper to the last loop of the bow, it has to be just right. Whether it's a token of appreciation or the grandest of gestures.",
+                  backgroundImage: "/images/gift-hero-bg.jpg",
+                  buttonText: "Shop Now",
+                  buttonLink: "#collection-for_her"
+                }}
+                fallbackImage="/images/gift-hero-bg.jpg"
+              />
+            )}
+
+
 
             <div id="collections">
               <CollectionSection
                 title="Gifts For Her"
                 collectionKey="for_her"
-                visibleCount={4}
               />
             </div>
 

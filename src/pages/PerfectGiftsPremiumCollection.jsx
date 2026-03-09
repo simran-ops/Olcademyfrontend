@@ -7,12 +7,12 @@ import ProductCartSection from '../pages/ProductCartSection';
 import { useCart } from '../CartContext';
 import { useWishlist } from '../WishlistContext';
 import ScentService from '../services/scentService';
-import { 
-  ShoppingBag, 
-  ShoppingCart, 
-  Heart, 
-  Eye, 
-  Star, 
+import {
+  ShoppingBag,
+  ShoppingCart,
+  Heart,
+  Eye,
+  Star,
   RefreshCw,
   Gift,
   CheckCircle,
@@ -61,9 +61,9 @@ const PerfectGiftsPremiumCollection = () => {
         limit: itemsPerPage,
         isActive: true
       };
-      
+
       const response = await ScentService.getPerfectGiftsPremiumScents(params);
-      
+
       if (response.success) {
         setScents(response.data || []);
         if (response.pagination) {
@@ -164,7 +164,7 @@ const PerfectGiftsPremiumCollection = () => {
 
   //   const handleWishlistToggle = (e) => {
   //     e.stopPropagation();
-      
+
   //     if (!scent._id) {
   //       addNotification('Unable to add to wishlist', 'error');
   //       return;
@@ -172,7 +172,7 @@ const PerfectGiftsPremiumCollection = () => {
 
   //     try {
   //       const wasInWishlist = isInWishlist(scent._id);
-        
+
   //       const wishlistProduct = {
   //         id: scent._id.toString(),
   //         name: scent.name,
@@ -183,7 +183,7 @@ const PerfectGiftsPremiumCollection = () => {
   //         brand: scent.brand || '',
   //         selectedSize: null
   //       };
-        
+
   //       toggleWishlist(wishlistProduct);
   //       addNotification(
   //         wasInWishlist ? 'Removed from wishlist' : 'Added to wishlist!',
@@ -290,7 +290,7 @@ const PerfectGiftsPremiumCollection = () => {
   //           onLoad={handleImageLoad}
   //           loading="lazy"
   //         />
-          
+
   //         {/* Overlay on hover */}
   //         <AnimatePresence>
   //           {isHovered && (
@@ -330,7 +330,7 @@ const PerfectGiftsPremiumCollection = () => {
   //             by {scent.brand}
   //           </p>
   //         )}
-          
+
   //         {scent.description && (
   //           <p className="text-sm text-amber-700 dark:text-gray-400 leading-relaxed line-clamp-2">
   //             {scent.description}
@@ -355,7 +355,7 @@ const PerfectGiftsPremiumCollection = () => {
   //             </span>
   //           )}
   //         </div>
-          
+
   //         <div className="flex items-center justify-between pt-2">
   //           <div className="flex flex-col">
   //             <p className="text-xl font-bold text-amber-600 dark:text-yellow-400">
@@ -402,257 +402,254 @@ const PerfectGiftsPremiumCollection = () => {
   //     </motion.div>
   //   );
   // });
-const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishlist, navigate, addNotification, setIsCartOpen }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [imageError, setImageError] = useState({ primary: false, hover: false });
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishlist, navigate, addNotification, setIsCartOpen }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const [imageError, setImageError] = useState({ primary: false, hover: false });
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  if (!scent) return null;
+    if (!scent) return null;
 
-  const scentInCart = isInCart(
-    scent._id?.toString(),
-    scent.sizes && scent.sizes.length > 0 ? scent.sizes[0].size : null
-  );
+    const scentInCart = isInCart(
+      scent._id?.toString(),
+      scent.sizes && scent.sizes.length > 0 ? scent.sizes[0].size : null
+    );
 
-  const handleAddToCart = async (e) => {
-    e.stopPropagation();
-    setIsAddingToCart(true);
+    const handleAddToCart = async (e) => {
+      e.stopPropagation();
+      setIsAddingToCart(true);
 
-    const cartItem = {
-      id: scent._id.toString(),
-      name: scent.name,
-      price: Number(scent.price),
-      image:
-        scent.images && scent.images.length > 0
-          ? scent.images[0]
-          : "/images/default-scent.png",
-      quantity: 1,
-      selectedSize:
-        scent.sizes && scent.sizes.length > 0 ? scent.sizes[0].size : null,
-      personalization: null,
-    };
-
-    try {
-      const success = await addToCart(cartItem);
-      if (success) {
-        addNotification(null, 'success', scent.name, 'cart');
-      } else {
-        addNotification('Failed to add item to cart', 'error');
-      }
-    } catch (error) {
-      console.error('Add to cart error:', error);
-      addNotification('Something went wrong. Please try again.', 'error');
-    } finally {
-      setIsAddingToCart(false);
-    }
-  };
-
-  const handleWishlistToggle = (e) => {
-    e.stopPropagation();
-    if (!scent._id) {
-      addNotification('Unable to add to wishlist', 'error');
-      return;
-    }
-
-    try {
-      const wasInWishlist = isInWishlist(scent._id);
-
-      const wishlistItem = {
+      const cartItem = {
         id: scent._id.toString(),
         name: scent.name,
-        price: scent.price,
+        price: Number(scent.price),
         image:
           scent.images && scent.images.length > 0
             ? scent.images[0]
             : "/images/default-scent.png",
-        description: scent.description || "",
-        category: scent.category || "",
-        selectedSize: null,
+        quantity: 1,
+        selectedSize:
+          scent.sizes && scent.sizes.length > 0 ? scent.sizes[0].size : null,
+        personalization: null,
       };
 
-      toggleWishlist(wishlistItem);
-      addNotification(
-        wasInWishlist ? 'Removed from wishlist' : 'Added to wishlist!',
-        'success',
-        scent.name,
-        'wishlist'
-      );
-    } catch (error) {
-      console.error('Wishlist toggle error:', error);
-      addNotification('Failed to update wishlist', 'error');
-    }
-  };
+      try {
+        const success = await addToCart(cartItem);
+        if (success) {
+          addNotification(null, 'success', scent.name, 'cart');
+        } else {
+          addNotification('Failed to add item to cart', 'error');
+        }
+      } catch (error) {
+        console.error('Add to cart error:', error);
+        addNotification('Something went wrong. Please try again.', 'error');
+      } finally {
+        setIsAddingToCart(false);
+      }
+    };
 
-  const handleCardClick = () => {
-    if (!scent._id) {
-      addNotification('Scent not available', 'error');
-      return;
-    }
-    navigate(`/scent/${scent._id.toString()}`);
-  };
+    const handleWishlistToggle = (e) => {
+      e.stopPropagation();
+      if (!scent._id) {
+        addNotification('Unable to add to wishlist', 'error');
+        return;
+      }
 
-  const getScentImage = () => {
-    if (isHovered && scent.hoverImage && !imageError.hover) {
-      return scent.hoverImage;
-    }
-    if (
-      scent.images &&
-      Array.isArray(scent.images) &&
-      scent.images.length > 0 &&
-      !imageError.primary
-    ) {
-      return scent.images[0];
-    }
-    return "/images/default-scent.png";
-  };
+      try {
+        const wasInWishlist = isInWishlist(scent._id);
 
-  const handleImageError = (e, type = "primary") => {
-    setImageError((prev) => ({ ...prev, [type]: true }));
-    e.target.src = "/images/default-scent.png";
-  };
+        const wishlistItem = {
+          id: scent._id.toString(),
+          name: scent.name,
+          price: scent.price,
+          image:
+            scent.images && scent.images.length > 0
+              ? scent.images[0]
+              : "/images/default-scent.png",
+          description: scent.description || "",
+          category: scent.category || "",
+          selectedSize: null,
+        };
 
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8, boxShadow: "0 10px 30px rgba(0,0,0,0.15)" }}
-      transition={{ duration: 0.3 }}
-      className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px]"
-      style={{ height: "auto", minHeight: "528px" }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={handleCardClick}
-    >
-      {/* Image Container */}
-      <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3">
-        <motion.img
-          src={getScentImage()}
-          alt={scent.name || "Scent"}
-          className="object-contain w-full h-full max-w-[248px] max-h-[248px]"
-          onError={(e) => handleImageError(e, isHovered ? "hover" : "primary")}
-          animate={{ scale: isHovered ? 1.08 : 1 }}
-          transition={{ duration: 0.4 }}
-          loading="lazy"
-        />
-        {/* Wishlist Button */}
-        <motion.button
-          onClick={handleWishlistToggle}
-          whileHover={{ scale: 1.15 }}
-          whileTap={{ scale: 0.9 }}
-          className="absolute top-2.5 right-2.5 bg-white dark:bg-gray-800 rounded-full p-1.5  transition-all duration-200 z-10 w-[27px] h-[27px] flex items-center justify-center"
-          aria-label={
-            isInWishlist(scent._id) ? "Remove from wishlist" : "Add to wishlist"
-          }
-        >
-          <FiHeart
-            size={14}
-            className={`transition-all duration-200 ${
-              isInWishlist(scent._id)
-                ? "fill-red-600 text-red-600"
-                : "text-gray-700 dark:text-gray-300"
-            }`}
+        toggleWishlist(wishlistItem);
+        addNotification(
+          wasInWishlist ? 'Removed from wishlist' : 'Added to wishlist!',
+          'success',
+          scent.name,
+          'wishlist'
+        );
+      } catch (error) {
+        console.error('Wishlist toggle error:', error);
+        addNotification('Failed to update wishlist', 'error');
+      }
+    };
+
+    const handleCardClick = () => {
+      if (!scent._id) {
+        addNotification('Scent not available', 'error');
+        return;
+      }
+      navigate(`/scent/${scent._id.toString()}`);
+    };
+
+    const getScentImage = () => {
+      if (isHovered && scent.hoverImage && !imageError.hover) {
+        return scent.hoverImage;
+      }
+      if (
+        scent.images &&
+        Array.isArray(scent.images) &&
+        scent.images.length > 0 &&
+        !imageError.primary
+      ) {
+        return scent.images[0];
+      }
+      return "/images/default-scent.png";
+    };
+
+    const handleImageError = (e, type = "primary") => {
+      setImageError((prev) => ({ ...prev, [type]: true }));
+      e.target.src = "/images/default-scent.png";
+    };
+
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -8, boxShadow: "0 10px 30px rgba(0,0,0,0.15)" }}
+        transition={{ duration: 0.3 }}
+        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={handleCardClick}
+      >
+        {/* Image Container */}
+        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
+          <motion.img
+            src={getScentImage()}
+            alt={scent.name || "Scent"}
+            className="object-contain w-full h-full max-w-[248px] max-h-[248px]"
+            onError={(e) => handleImageError(e, isHovered ? "hover" : "primary")}
+            animate={{ scale: isHovered ? 1.08 : 1 }}
+            transition={{ duration: 0.4 }}
+            loading="lazy"
           />
-        </motion.button>
-      </div>
-
-      {/* Info Section */}
-      <div className="px-3.5 py-3.5 flex flex-col gap-3.5">
-        {/* Name */}
-        <h3
-          className="font-bold uppercase text-center line-clamp-1 text-lg sm:text-xl md:text-2xl"
-          style={{
-            fontFamily: "Playfair Display, serif",
-            letterSpacing: "0.05em",
-            color: "#5A2408",
-            minHeight: "28px",
-          }}
-        >
-          {scent.name || ""}
-        </h3>
-
-        {/* Rating */}
-        <div
-          className="flex items-center justify-center gap-1"
-          style={{ minHeight: "18px" }}
-        >
-          {scent.rating ? (
-            [...Array(5)].map((_, index) => (
-              <Star
-                key={index}
-                size={14}
-                style={{
-                  color: "#5A2408",
-                  fill:
-                    index < Math.floor(scent.rating) ? "#5A2408" : "transparent",
-                }}
-                className={`${
-                  index < Math.floor(scent.rating) ? "" : "opacity-30"
+          {/* Wishlist Button */}
+          <motion.button
+            onClick={handleWishlistToggle}
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.9 }}
+            className="absolute top-2.5 right-2.5 bg-white dark:bg-gray-800 rounded-full p-1.5  transition-all duration-200 z-10 w-[27px] h-[27px] flex items-center justify-center"
+            aria-label={
+              isInWishlist(scent._id) ? "Remove from wishlist" : "Add to wishlist"
+            }
+          >
+            <FiHeart
+              size={14}
+              className={`transition-all duration-200 ${isInWishlist(scent._id)
+                  ? "fill-red-600 text-red-600"
+                  : "text-gray-700 dark:text-gray-300"
                 }`}
-              />
-            ))
-          ) : (
-            <div className="h-3.5"></div>
-          )}
+            />
+          </motion.button>
         </div>
 
-        {/* Description */}
-        <p
-          className="text-center line-clamp-2 text-sm sm:text-base"
-          style={{
-            fontFamily: "Manrope, sans-serif",
-            fontWeight: "500",
-            letterSpacing: "0.02em",
-            color: "#7E513A",
-            minHeight: "40px",
-          }}
-        >
-          {scent.description || ""}
-        </p>
+        {/* Info Section */}
+        <div className="px-3.5 py-3.5 flex flex-col gap-3.5">
+          {/* Name */}
+          <h3
+            className="font-bold uppercase text-center line-clamp-1 text-lg sm:text-xl md:text-2xl"
+            style={{
+              fontFamily: "Playfair Display, serif",
+              letterSpacing: "0.05em",
+              color: "#5A2408",
+              minHeight: "28px",
+            }}
+          >
+            {scent.name || ""}
+          </h3>
 
-        {/* Price */}
-        <p
-          className="font-bold text-center text-lg sm:text-xl"
-          style={{
-            fontFamily: "Manrope, sans-serif",
-            letterSpacing: "0.02em",
-            color: "#431A06",
-            minHeight: "24px",
-          }}
-        >
-          ${typeof scent.price === "number" ? scent.price.toFixed(2) : "0.00"}
-        </p>
+          {/* Rating */}
+          <div
+            className="flex items-center justify-center gap-1"
+            style={{ minHeight: "18px" }}
+          >
+            {scent.rating ? (
+              [...Array(5)].map((_, index) => (
+                <Star
+                  key={index}
+                  size={14}
+                  style={{
+                    color: "#5A2408",
+                    fill:
+                      index < Math.floor(scent.rating) ? "#5A2408" : "transparent",
+                  }}
+                  className={`${index < Math.floor(scent.rating) ? "" : "opacity-30"
+                    }`}
+                />
+              ))
+            ) : (
+              <div className="h-3.5"></div>
+            )}
+          </div>
 
-        {/* Add to Cart Button */}
-        <motion.button
-          onClick={
-            scentInCart
-              ? (e) => {
+          {/* Description */}
+          <p
+            className="text-center line-clamp-2 text-sm sm:text-base"
+            style={{
+              fontFamily: "Manrope, sans-serif",
+              fontWeight: "500",
+              letterSpacing: "0.02em",
+              color: "#7E513A",
+              minHeight: "40px",
+            }}
+          >
+            {scent.description || ""}
+          </p>
+
+          {/* Price */}
+          <p
+            className="font-bold text-center text-lg sm:text-xl"
+            style={{
+              fontFamily: "Manrope, sans-serif",
+              letterSpacing: "0.02em",
+              color: "#431A06",
+              minHeight: "24px",
+            }}
+          >
+            ${typeof scent.price === "number" ? scent.price.toFixed(2) : "0.00"}
+          </p>
+
+          {/* Add to Cart Button */}
+          <motion.button
+            onClick={
+              scentInCart
+                ? (e) => {
                   e.stopPropagation();
                   setIsCartOpen(true);
                 }
-              : handleAddToCart
-          }
-          disabled={isAddingToCart}
-          whileHover={{ scale: 1.02, opacity: 0.9 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex items-center justify-center gap-2 sm:gap-2.5 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[54px] sm:h-[60px] text-sm sm:text-base md:text-lg -mx-3.5 px-3.5"
-          style={{
-            backgroundColor: scentInCart ? "#431A06" : "#431A06",
-            fontFamily: "Manrope, sans-serif",
-            letterSpacing: "0.05em",
-            width: "calc(100% + 28px)",
-          }}
-        >
-          <ShoppingCart size={20} className="sm:w-[24px] sm:h-[24px]" />
-          <span>
-            {isAddingToCart ? "Adding..." : scentInCart ? "View Cart" : "Add to Cart"}
-          </span>
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-});
+                : handleAddToCart
+            }
+            disabled={isAddingToCart}
+            whileHover={{ scale: 1.02, opacity: 0.9 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center justify-center gap-2 sm:gap-2.5 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[54px] sm:h-[60px] text-sm sm:text-base md:text-lg -mx-3.5 px-3.5"
+            style={{
+              backgroundColor: scentInCart ? "#431A06" : "#431A06",
+              fontFamily: "Manrope, sans-serif",
+              letterSpacing: "0.05em",
+              width: "calc(100% + 28px)",
+            }}
+          >
+            <ShoppingCart size={20} className="sm:w-[24px] sm:h-[24px]" />
+            <span>
+              {isAddingToCart ? "Adding..." : scentInCart ? "View Cart" : "Add to Cart"}
+            </span>
+          </motion.button>
+        </div>
+      </motion.div>
+    );
+  });
 
   ScentCard.displayName = 'ScentCard';
 
@@ -680,7 +677,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
             brand: quickViewProduct.brand || '',
             selectedSize: null
           };
-          
+
           toggleWishlist(wishlistProduct);
           addNotification(
             wasInWishlist ? 'Removed from wishlist' : 'Added to wishlist!',
@@ -759,7 +756,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
                 ×
               </button>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <img
@@ -771,7 +768,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
                   }}
                 />
               </div>
-              
+
               <div className="space-y-4">
                 <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                   {quickViewProduct.name || 'Unnamed Scent'}
@@ -787,7 +784,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
                 <p className="text-2xl font-bold text-amber-600 dark:text-yellow-400">
                   ${quickViewProduct.price ? quickViewProduct.price.toFixed(2) : '0.00'}
                 </p>
-                
+
                 {/* Scent Details */}
                 <div className="flex flex-wrap gap-2 text-xs">
                   {quickViewProduct.scentFamily && (
@@ -806,7 +803,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
                     </span>
                   )}
                 </div>
-                
+
                 <div className="flex gap-4">
                   {productInQuickViewCart ? (
                     <button
@@ -991,7 +988,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
       <QuickViewModal />
       {/* CART SIDEBAR */}
       <ProductCartSection isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-      
+
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden w-full bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
@@ -1002,23 +999,23 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60"></div>
             <div className="absolute text-white text-center text-shadow inset-0 flex items-center justify-center">
-               <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="flex items-center justify-center space-x-3 mb-6">
-                <Crown size={48} />
-                <h1 className="text-5xl md:text-6xl font-dm-serif font-bold">
-                  Perfect Premium Gifts
-                </h1>
-                <Gift size={48} />
-              </div>
-              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-                Elegant premium fragrances that make impressive gifts. Sophisticated scents 
-                for those who appreciate quality and refinement.
-              </p>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="flex items-center justify-center space-x-3 mb-6">
+                  <Crown size={48} />
+                  <h1 className="text-5xl md:text-6xl font-dm-serif font-bold">
+                    Perfect Premium Gifts
+                  </h1>
+                  <Gift size={48} />
+                </div>
+                <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
+                  Elegant premium fragrances that make impressive gifts. Sophisticated scents
+                  for those who appreciate quality and refinement.
+                </p>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -1068,8 +1065,8 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
                       return null;
                     }
                     return (
-                      <ScentCard 
-                        key={scent._id} 
+                      <ScentCard
+                        key={scent._id}
                         scent={scent}
                         addToCart={addToCart}
                         isInCart={isInCart}
@@ -1093,7 +1090,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
                     >
                       Previous
                     </button>
-                    
+
                     <div className="flex space-x-2">
                       {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                         let pageNum;
@@ -1110,11 +1107,10 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
                           <button
                             key={pageNum}
                             onClick={() => setCurrentPage(pageNum)}
-                            className={`px-3 py-1 rounded ${
-                              currentPage === pageNum
+                            className={`px-3 py-1 rounded ${currentPage === pageNum
                                 ? 'bg-amber-500 text-white'
                                 : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
-                            }`}
+                              }`}
                           >
                             {pageNum}
                           </button>
@@ -1136,7 +1132,7 @@ const ScentCard = memo(({ scent, addToCart, isInCart, toggleWishlist, isInWishli
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

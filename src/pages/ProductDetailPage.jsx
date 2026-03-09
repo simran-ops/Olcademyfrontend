@@ -464,8 +464,8 @@ export default function ProductDetailPage() {
                       setJustAdded(false);
                     }}
                     className={`flex items-center justify-center uppercase text-[13px] md:text-[14px] font-[Manrope] tracking-[0.02em] transition-all duration-150 w-auto min-w-[60px] h-auto min-h-[35px] px-3 py-1.5 border border-[#3A3A3A] opacity-100 whitespace-nowrap ${sizeObj.size === selectedSize
-                        ? 'bg-[#3A3A3A] text-white border-b-[1.5px]'
-                        : 'bg-white text-[#3A3A3A] border-b-[1px]'
+                      ? 'bg-[#3A3A3A] text-white border-b-[1.5px]'
+                      : 'bg-white text-[#3A3A3A] border-b-[1px]'
                       }`}
                   >
                     {sizeObj.size}
@@ -692,10 +692,10 @@ export default function ProductDetailPage() {
                 onClick={() =>
                   navigate(isScentPage ? `/scent/${related._id}` : `/product/${related._id}`)
                 }
-                className="bg-white overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] flex flex-col"
+                className="bg-white overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col"
               >
                 {/* Image */}
-                <div className="relative bg-white flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3">
+                <div className="relative bg-white flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
                   <img
                     src={resolveImage(related.images?.[0])}
                     alt={related.name}

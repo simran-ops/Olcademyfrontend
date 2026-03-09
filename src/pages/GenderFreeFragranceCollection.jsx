@@ -6,14 +6,14 @@ import Footer from '../components/common/Footer';
 import { useCart } from '../CartContext';
 import { useWishlist } from '../WishlistContext';
 import ScentService from '../services/scentService';
-import ProductCartSection from '../pages/ProductCartSection'; 
+import ProductCartSection from '../pages/ProductCartSection';
 
-import { 
-  ShoppingBag, 
-  ShoppingCart, 
-  Heart, 
-  Eye, 
-  Star, 
+import {
+  ShoppingBag,
+  ShoppingCart,
+  Heart,
+  Eye,
+  Star,
   RefreshCw,
   Users,
   Sparkles,
@@ -179,7 +179,7 @@ const GenderFreeFragranceCollection = () => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8 }}
         transition={{ duration: 0.3 }}
-        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] min-h-[528px] flex flex-col justify-between border-none"
+        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col justify-between border-none"
         style={{ borderRadius: '0px' }}
         onClick={handleProductClick}
         onMouseEnter={() => setIsHovered(true)}
@@ -187,7 +187,7 @@ const GenderFreeFragranceCollection = () => {
       >
         <div>
           <div
-            className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3"
+            className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3"
             style={{ borderRadius: '0px' }}
           >
             <img
@@ -478,11 +478,10 @@ const GenderFreeFragranceCollection = () => {
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
-            className={`p-4 rounded-2xl shadow-lg backdrop-blur-sm max-w-sm ${
-              notification.type === 'success'
+            className={`p-4 rounded-2xl shadow-lg backdrop-blur-sm max-w-sm ${notification.type === 'success'
                 ? 'bg-green-500 text-white'
                 : 'bg-red-500 text-white'
-            }`}
+              }`}
           >
             <div className="flex items-center space-x-3">
               {notification.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
@@ -656,11 +655,10 @@ const GenderFreeFragranceCollection = () => {
                           <button
                             key={pageNum}
                             onClick={() => setCurrentPage(pageNum)}
-                            className={`px-3 py-1 rounded ${
-                              currentPage === pageNum
+                            className={`px-3 py-1 rounded ${currentPage === pageNum
                                 ? 'bg-purple-500 text-white'
                                 : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
-                            }`}
+                              }`}
                           >
                             {pageNum}
                           </button>

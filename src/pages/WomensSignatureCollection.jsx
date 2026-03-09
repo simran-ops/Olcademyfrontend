@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { useCart } from '../CartContext';
+import CollectionHero from '../components/common/CollectionHero';
+
 import { useWishlist } from '../WishlistContext';
 import ScentService from '../services/scentService';
 import ProductCartSection from '../pages/ProductCartSection';
@@ -299,23 +301,18 @@ const WomensSignatureCollection = () => {
 
       <main className="flex-1">
         {/* BANNER SECTION */}
-        <section className="relative overflow-hidden w-full bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
-          <div className="relative w-full h-[400px] md:h-[400px] lg:h-[400px] flex items-center justify-center">
-            <img
-              src="/images/unisex.png"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center px-6">
-                <Star className="w-20 h-20 mx-auto text-purple-400 mb-6" />
-                <h1 className="text-6xl md:text-7xl font-bold text-white tracking-wider">
-                  Women's Signature Collection
-                </h1>
-              </div>
-            </div>
-          </div>
-        </section>
+        <CollectionHero
+          banner={{
+            title: "Women's Signature",
+            titleHighlight: "Collection",
+            description: "Experience elegance and allure with our most prestigious signature scents for her.",
+            backgroundImage: "/images/unisex.png",
+            buttonText: "Explore Collection",
+            buttonLink: "#products"
+          }}
+          fallbackImage="/images/unisex.png"
+        />
+
         <section className="py-10 sm:py-14 lg:py-16 px-4 sm:px-6 bg-[#F8F6F3] dark:bg-[#0d0603]">
           <div className="max-w-[1555px] mx-auto">
             {loading ? (
@@ -332,34 +329,33 @@ const WomensSignatureCollection = () => {
             ) : scents.length === 0 ? (
               <h3 className="text-center py-20 text-xl">No signature scents found</h3>
             ) : (
-            ): (
-                <>
-                <div className = "text-center mb-6 text-gray-400">
-                  Showing { scents.length } items
-          </div>
+              <>
+                <div className="text-center mb-6 text-gray-400">
+                  Showing {scents.length} items
+                </div>
 
-          {isMobile ? (
-            <ProductCardsMobile
-              title="Women's Signature Collection"
-              products={scents}
-              darkMode={false} // passed as prop if needed, or handled inside
-              addNotification={addNotification}
-            />
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center">
-              {scents.map((scent) => (
-                <ProductCard key={scent._id} scent={scent} />
-              ))}
-            </div>
-          )}
-        </>
+                {isMobile ? (
+                  <ProductCardsMobile
+                    title="Women's Signature Collection"
+                    products={scents}
+                    darkMode={false}
+                    addNotification={addNotification}
+                  />
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center">
+                    {scents.map((scent) => (
+                      <ProductCard key={scent._id} scent={scent} />
+                    ))}
+                  </div>
+                )}
+              </>
             )}
-    </div>
-        </section >
-      </main >
+          </div>
+        </section>
+      </main>
 
-  <Footer />
-    </div >
+      <Footer />
+    </div>
   );
 };
 

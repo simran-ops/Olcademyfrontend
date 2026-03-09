@@ -162,14 +162,14 @@ const PerfectDiscoverGiftsCollection = () => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8 }}
         transition={{ duration: 0.3 }}
-        className="bg-white shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] min-h-[528px] flex flex-col justify-between"
+        className="bg-white shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col justify-between"
         style={{ borderRadius: '0px' }}
         onClick={handleProductClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* PRODUCT IMAGE */}
-        <div className="relative w-full aspect-[331/273] flex items-center justify-center bg-white p-3">
+        <div className="relative w-full aspect-[290/240] flex items-center justify-center bg-white p-3">
           <img
             src={scent.images?.[0] || "/images/default-scent.png"}
             className="object-contain w-full h-full max-w-[248px] max-h-[248px]"
@@ -242,8 +242,8 @@ const PerfectDiscoverGiftsCollection = () => {
               {isAddingToCart
                 ? "Adding..."
                 : productInCart
-                ? "View Cart"
-                : "Add to Cart"}
+                  ? "View Cart"
+                  : "Add to Cart"}
             </span>
           </motion.button>
         </div>
@@ -260,9 +260,8 @@ const PerfectDiscoverGiftsCollection = () => {
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
-            className={`p-4 rounded-xl shadow-lg backdrop-blur-sm max-w-sm ${
-              n.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-            } text-white`}
+            className={`p-4 rounded-xl shadow-lg backdrop-blur-sm max-w-sm ${n.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+              } text-white`}
           >
             <div className="flex items-center space-x-3">
               {n.type === 'success' ? (
@@ -357,11 +356,10 @@ const PerfectDiscoverGiftsCollection = () => {
                     <button
                       key={i + 1}
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`px-3 py-1 rounded ${
-                        currentPage === i + 1
+                      className={`px-3 py-1 rounded ${currentPage === i + 1
                           ? 'bg-purple-500 text-white'
                           : 'bg-gray-300'
-                      }`}
+                        }`}
                     >
                       {i + 1}
                     </button>

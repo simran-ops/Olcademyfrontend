@@ -11,6 +11,8 @@ import { useWishlist } from '@/WishlistContext';
 import { Star, ShoppingCart, CheckCircle, AlertCircle, Heart, X } from 'lucide-react';
 import { FiHeart } from 'react-icons/fi';
 import ProductService from '../../services/productService';
+import CollectionHero from '../../components/common/CollectionHero';
+
 
 const MensCollection = () => {
   const navigate = useNavigate();
@@ -181,7 +183,7 @@ const MensCollection = () => {
         const success = await addToCart(cartItem);
         if (success) {
           // UPDATED: Pass 'cart' as actionType with product name
-          addNotification(`Added to cart!, 'success', product.name, 'cart'`);
+          addNotification('Added to cart!', 'success', product.name, 'cart');
         } else {
           addNotification('Failed to add item to cart', 'error', null, 'cart');
         }
@@ -473,46 +475,14 @@ const MensCollection = () => {
 
     if (type === 'hero') {
       return (
-        <motion.section
-          variants={fadeIn("up", 0.2)}
-          initial="hidden"
-          whileInView="show"
-          className="relative py-0 overflow-hidden"
-        >
-          <div className="relative h-[270px] sm:h-[360px] lg:h-[450px] bg-gradient-to-r from-black/50 to-transparent">
-            <img
-              src={banner.backgroundImage ? ProductService.constructBannerURL(banner.backgroundImage) : '/images/baner1.jpeg'}
-              alt={banner.altText || banner.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                console.warn('Hero banner failed to load:', e.target.src);
-                e.target.src = '/images/baner1.jpeg';
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
-            <div className="absolute inset-0 flex items-center justify-start px-5 sm:px-7 lg:px-10">
-              <div className="text-white max-w-2xl">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-dm-serif mb-3.5 sm:mb-5 leading-tight" style={{ color: banner.textColor || '#FFFFFF' }}>
-                  {banner.title} <br />
-                  <span style={{ color: banner.highlightColor || '#f6d110' }}>
-                    {banner.titleHighlight}
-                  </span>
-                </h2>
-                <p className="text-sm sm:text-base lg:text-lg mb-5 sm:mb-7 text-gray-200">
-                  {banner.description}
-                </p>
-                <Button
-                  onClick={handleClick}
-                  className="bg-gradient-to-r from-[#79300f] to-[#5a2408] hover:from-[#5a2408] hover:to-[#79300f] text-white px-5 sm:px-7 py-2.5 sm:py-3.5 text-sm sm:text-base font-semibold  shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  {banner.buttonText}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </motion.section>
+        <CollectionHero
+          banner={banner}
+          fallbackImage="/images/baner1.jpeg"
+          onBannerClick={handleBannerClick}
+        />
       );
     }
+
 
     if (type === 'product_highlight') {
       return (
@@ -837,19 +807,19 @@ const MensCollection = () => {
           variants={fadeIn('up', 0.2)}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.4 }}
-          className="text-center px-4 sm:px-6 py-10 sm:py-14 lg:py-16 bg-white dark:from-[#0d0603] dark:to-[#1a1410]"
+          viewport={{ once: false, amount: 0.2 }}
+          className="text-center px-4 sm:px-6 py-6 sm:py-8 lg:py-10 bg-white dark:from-[#0d0603] dark:to-[#1a1410]"
         >
           <motion.h1
             variants={fadeIn('up', 0.3)}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3.5 sm:mb-5 leading-[120%] text-[#271004] dark:text-[#f6d110]"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 leading-[120%] text-[#271004] dark:text-[#f6d110]"
             style={{ fontFamily: 'Playfair Display, serif' }}
           >
             Men's Scents
           </motion.h1>
           <motion.p
             variants={fadeIn('up', 0.4)}
-            className="text-base sm:text-lg lg:text-xl leading-relaxed max-w-[734px] mx-auto text-[#3A3A3A] dark:text-gray-300 px-4"
+            className="text-sm sm:text-base lg:text-lg leading-relaxed max-w-[734px] mx-auto text-[#3A3A3A] dark:text-gray-300 px-4"
             style={{ letterSpacing: '0.02em', fontFamily: 'Manrope, sans-serif' }}
           >
             Bold, woody, and timeless scents crafted to embody strength and confidence.
