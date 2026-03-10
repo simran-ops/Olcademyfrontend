@@ -8,6 +8,11 @@ body {
   box-sizing: border-box;
 }
 
+html {
+  font-size: 87.5%;
+  /* Sets base rem to 14px instead of 16px */
+}
+
 * {
   box-sizing: border-box;
 }
@@ -17,17 +22,21 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 .header-scrolled .search-icon {
-    margin-right: auto !important;
+  margin-right: auto !important;
 }
 
 /* Keep wishlist, cart, and profile together on the right */
 .header-scrolled .right-icons {
-    display: flex;
-    gap: 15px;
-    margin-left: auto;
+  display: flex;
+  gap: 15px;
+  margin-left: auto;
 }

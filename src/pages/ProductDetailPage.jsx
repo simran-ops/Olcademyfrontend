@@ -44,14 +44,14 @@ export default function ProductDetailPage() {
   //img handler
   const resolveImage = (image) => {
     if (!image) return '/images/default-perfume.png';
-  
+
     if (image.startsWith('http')) return image;
-  
+
     // Backend-served image
     return `${API_BASE_URL}/api/products/images/${image}`;
   };
 
-    // Add notification helper
+  // Add notification helper
   const addNotification = useCallback((message, type = 'success', productName = null, actionType = 'general') => {
     const id = Date.now();
     setNotifications((prev) => [...prev, { id, message, type, productName, actionType }]);
@@ -69,37 +69,37 @@ export default function ProductDetailPage() {
         setProduct(null);
         setRelatedProducts([]);
 
-              // 👉 SCENT PAGE
+        // 👉 SCENT PAGE
         if (location.pathname.startsWith('/scent')) {
-  const scentPromise = ScentService.getScentById(id);
-  const relatedScentPromise = ScentService.getRelatedScents(id);
+          const scentPromise = ScentService.getScentById(id);
+          const relatedScentPromise = ScentService.getRelatedScents(id);
 
-  const [scentRes, relatedRes] = await Promise.all([
-    scentPromise,
-    relatedScentPromise
-  ]);
+          const [scentRes, relatedRes] = await Promise.all([
+            scentPromise,
+            relatedScentPromise
+          ]);
 
-  if (scentRes?.data) {
-    setProduct(scentRes.data);
-  }
+          if (scentRes?.data) {
+            setProduct(scentRes.data);
+          }
 
-if (relatedRes?.data?.related_products) {
-  const normalized = relatedRes.data.related_products.map(p => ({
-    ...p,
-    price: p.price ?? p.discountedPrice ?? p.sizes?.[0]?.price ?? 0,
-    rating: p.rating ?? 5,
-    images: p.images?.length
-      ? p.images
-      : ['/images/default-perfume.png'],
-  }));
+          if (relatedRes?.data?.related_products) {
+            const normalized = relatedRes.data.related_products.map(p => ({
+              ...p,
+              price: p.price ?? p.discountedPrice ?? p.sizes?.[0]?.price ?? 0,
+              rating: p.rating ?? 5,
+              images: p.images?.length
+                ? p.images
+                : ['/images/default-perfume.png'],
+            }));
 
-  setRelatedProducts(normalized);
-} else {
-  setRelatedProducts([]);
-}
+            setRelatedProducts(normalized);
+          } else {
+            setRelatedProducts([]);
+          }
 
-  return;
-}
+          return;
+        }
 
 
         // 👉 PRODUCT PAGE (NORMAL FLOW)
@@ -207,7 +207,7 @@ if (relatedRes?.data?.related_products) {
     setIsCartOpen(true);
   };
 
-  const handleNoop = () => {};
+  const handleNoop = () => { };
 
   const handleWishlistToggle = (relatedItem) => {
     if (!relatedItem._id) {
@@ -364,9 +364,9 @@ if (relatedRes?.data?.related_products) {
     >
       <Header />
       <NotificationSystem />
-      <main className="max-w-[1200px] mx-auto pt-12 pb-24 px-4 w-full">
+      <main className="max-w-[1200px] mx-auto pt-4 pb-12 px-4 w-full">
         {/* Product detail layout: left image, right details */}
-        <div className="flex flex-col md:flex-row gap-12">
+        <div className="flex flex-col md:flex-row gap-6">
           {/* ✅ UPDATED: Image section with clickable thumbnails */}
           <div className="md:w-1/2 w-full flex gap-4 items-start">
             {/* Thumbnail Gallery */}
@@ -376,11 +376,10 @@ if (relatedRes?.data?.related_products) {
                   <div key={index} className="relative group">
                     <button
                       onClick={() => setSelectedImage(image)}
-                      className={`w-[60px] h-[60px] md:w-[90px] md:h-[90px] bg-white border-2 flex-shrink-0 overflow-hidden transition-all duration-300 ${
-                        selectedImage === image
-                          ? 'border-[#5A2408] shadow-md opacity-100'
-                          : 'border-[#E0D5CC] opacity-70 hover:opacity-100 hover:border-[#5A2408]'
-                      }`}
+                      className={`w-[50px] h-[50px] md:w-[70px] md:h-[70px] bg-white border-2 flex-shrink-0 overflow-hidden transition-all duration-300 ${selectedImage === image
+                        ? 'border-[#5A2408] shadow-md opacity-100'
+                        : 'border-[#E0D5CC] opacity-70 hover:opacity-100 hover:border-[#5A2408]'
+                        }`}
                     >
                       <img
                         src={image}
@@ -402,7 +401,7 @@ if (relatedRes?.data?.related_products) {
                   '/images/default-perfume.png'
                 }
                 alt={product.name}
-                className="w-full max-w-[800px] h-auto max-h-[600px] object-contain bg-white transition-all duration-500 ease-in-out"
+                className="w-full max-w-[600px] h-auto max-h-[450px] object-contain bg-white transition-all duration-500 ease-in-out"
                 style={{
                   boxShadow: '0px 12px 36px rgba(63,46,31,0.10)',
                 }}
@@ -412,10 +411,10 @@ if (relatedRes?.data?.related_products) {
 
           {/* Product info and actions */}
           <div className="md:w-1/2 w-full flex flex-col pr-2">
-            <h1 className="font-[Playfair] font-bold uppercase tracking-[0.05em] leading-[100%] text-3xl md:text-[48px] text-[#5A2408] mb-2">
+            <h1 className="font-[Playfair] font-bold uppercase tracking-[0.05em] leading-[100%] text-2xl md:text-[32px] text-[#5A2408] mb-1">
               {product.name}
             </h1>
-            <p className="font-[manrope] font-medium text-2xl md:text-[37px] leading-[100%] tracking-[0.02em] text-[#431A06] mt-3 mb-3">
+            <p className="font-[manrope] font-medium text-xl md:text-[28px] leading-[100%] tracking-[0.02em] text-[#431A06] mt-2 mb-2">
               ${displayPrice}
             </p>
 
@@ -449,11 +448,11 @@ if (relatedRes?.data?.related_products) {
             <div className='p-2'>
 
             </div>
-            
+
 
             {/* Size selection */}
-            <div className="flex items-center gap-3 mb-5 mt-1">
-              <span className="font-[manrope] font-semibold text-[25px] tracking-[0.02em] text-[#3A3A3A] text-lg">
+            <div className="flex items-center gap-3 mb-4 mt-1">
+              <span className="font-[manrope] font-semibold text-[18px] tracking-[0.02em] text-[#3A3A3A]">
                 Size:
               </span>
               <div className="flex gap-[10px] flex-wrap">
@@ -464,11 +463,10 @@ if (relatedRes?.data?.related_products) {
                       setSelectedSize(sizeObj.size);
                       setJustAdded(false);
                     }}
-                    className={`flex items-center justify-center uppercase text-[16px] font-[Manrope] tracking-[0.02em] transition-all duration-150 w-[65px] h-[40px] px-[20px] py-[8px] border border-[#3A3A3A] opacity-100 ${
-                      sizeObj.size === selectedSize
-                        ? 'bg-[#3A3A3A] text-white border-b-[1.5px]'
-                        : 'bg-white text-[#3A3A3A] border-b-[1px]'
-                    }`}
+                    className={`flex items-center justify-center uppercase text-[13px] md:text-[14px] font-[Manrope] tracking-[0.02em] transition-all duration-150 w-auto min-w-[60px] h-auto min-h-[35px] px-3 py-1.5 border border-[#3A3A3A] opacity-100 whitespace-nowrap ${sizeObj.size === selectedSize
+                      ? 'bg-[#3A3A3A] text-white border-b-[1.5px]'
+                      : 'bg-white text-[#3A3A3A] border-b-[1px]'
+                      }`}
                   >
                     {sizeObj.size}
                   </button>
@@ -479,14 +477,14 @@ if (relatedRes?.data?.related_products) {
             {/* Add to Cart or View in Cart */}
             {isInCart ? (
               <button
-                className="font-medium text-lg uppercase tracking-widest w-full py-3 mt-0 border-0 rounded-none bg-[#431A06] text-white"
+                className="font-medium text-base uppercase tracking-widest w-full py-2.5 mt-0 border-0 rounded-none bg-[#431A06] text-white"
                 onClick={handleOpenCart} // OPEN CART on click
               >
                 View in Cart
               </button>
             ) : (
               <button
-                className="font-medium text-lg uppercase tracking-widest w-full py-3 mt-0 border-0 rounded-none bg-[#431A06] text-white"
+                className="font-medium text-base uppercase tracking-widest w-full py-2.5 mt-0 border-0 rounded-none bg-[#431A06] text-white"
                 onClick={handleAdd}
               >
                 Add to Cart
@@ -500,7 +498,7 @@ if (relatedRes?.data?.related_products) {
                   <button
                     key={tab.key}
                     onClick={() => setSelectedTab(tab.key)}
-                    className={`flex-1 min-w-[120px] px-2 py-3 text-[14px] md:text-[16px] font-manrope font-normal uppercase tracking-[0.02em] text-center transition-all duration-75`}
+                    className={`flex-1 min-w-[100px] px-2 py-2 text-[13px] md:text-[14px] font-manrope font-normal uppercase tracking-[0.02em] text-center transition-all duration-75`}
                     style={{
                       background:
                         selectedTab === tab.key ? '#431A06' : '#EFE9E6',
@@ -511,7 +509,7 @@ if (relatedRes?.data?.related_products) {
                       border: 'none',
                       borderRadius: 0,
                       letterSpacing: '2%',
-                      minHeight: '60px'
+                      minHeight: '45px'
                     }}
                   >
                     {tab.label}
@@ -529,8 +527,8 @@ if (relatedRes?.data?.related_products) {
                     <ul className="list-disc ml-6 mb-2 text-[16px] font-manrope text-[#343434]">
                       {Array.isArray(product.descriptionDetails)
                         ? product.descriptionDetails.map((item, idx) => (
-                            <li key={idx}>{item}</li>
-                          ))
+                          <li key={idx}>{item}</li>
+                        ))
                         : product.description && <li>{product.description}</li>}
                     </ul>
                   </div>
@@ -541,8 +539,22 @@ if (relatedRes?.data?.related_products) {
                     <div className="flex flex-wrap gap-2">
                       {Array.isArray(product.fragrancenotes)
                         ? product.fragrancenotes.map((note, idx) => (
+                          <span
+                            key={idx}
+                            className="px-4 py-1 font-serif text-[15px]"
+                            style={{
+                              background: '#F0E7DF',
+                              color: '#3F2E1F',
+                            }}
+                          >
+                            {note}
+                          </span>
+                        ))
+                        : product.fragrancenotes &&
+                        Object.keys(product.fragrancenotes).map((section) =>
+                          product.fragrancenotes[section].map((note, idx) => (
                             <span
-                              key={idx}
+                              key={section + idx}
                               className="px-4 py-1 font-serif text-[15px]"
                               style={{
                                 background: '#F0E7DF',
@@ -552,21 +564,7 @@ if (relatedRes?.data?.related_products) {
                               {note}
                             </span>
                           ))
-                        : product.fragrancenotes &&
-                          Object.keys(product.fragrancenotes).map((section) =>
-                            product.fragrancenotes[section].map((note, idx) => (
-                              <span
-                                key={section + idx}
-                                className="px-4 py-1 font-serif text-[15px]"
-                                style={{
-                                  background: '#F0E7DF',
-                                  color: '#3F2E1F',
-                                }}
-                              >
-                                {note}
-                              </span>
-                            ))
-                          )}
+                        )}
                     </div>
                     {product.fragrance_notes?.top?.length > 0 && (
                       <div className="mt-0">
@@ -679,124 +677,124 @@ if (relatedRes?.data?.related_products) {
 
         {/* Related Products */}
         <h2
-          className="mt-20 mb-8 text-center font-serif font-extrabold text-2xl md:text-3xl tracking-widest uppercase"
+          className="mt-12 mb-6 text-center font-serif font-extrabold text-xl md:text-2xl tracking-widest uppercase"
           style={{ color: '#3F2E1F' }}
         >
           YOU MAY ALSO LIKE
         </h2>
-<div className="flex justify-center">
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 justify-items-center w-full">
-    {relatedProducts.slice(0, 4).map((related) => (
-      <motion.div
-        key={related._id}
-        whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
-        transition={{ duration: 0.3 }}
-        onClick={() =>
-          navigate(isScentPage ? `/scent/${related._id}` : `/product/${related._id}`)
-        }
-        className="bg-white overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] flex flex-col"
-      >
-        {/* Image */}
-        <div className="relative bg-white flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3">
-          <img
-            src={resolveImage(related.images?.[0])}
-            alt={related.name}
-            className="object-contain w-full h-full max-w-[248px] max-h-[248px]"
-          />
+        <div className="flex justify-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 justify-items-center w-full">
+            {relatedProducts.slice(0, 4).map((related) => (
+              <motion.div
+                key={related._id}
+                whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
+                transition={{ duration: 0.3 }}
+                onClick={() =>
+                  navigate(isScentPage ? `/scent/${related._id}` : `/product/${related._id}`)
+                }
+                className="bg-white overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col"
+              >
+                {/* Image */}
+                <div className="relative bg-white flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
+                  <img
+                    src={resolveImage(related.images?.[0])}
+                    alt={related.name}
+                    className="object-contain w-full h-full max-w-[248px] max-h-[248px]"
+                  />
 
-          {/* Wishlist */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleWishlistToggle(related);
-            }}
-            className="absolute top-2.5 right-2.5 bg-white rounded-full p-1.5 shadow-lg w-[27px] h-[27px] flex items-center justify-center"
-          >
-            <Heart
-              size={14}
-              className={
-                isInWishlist(related)
-                  ? 'fill-[#3F2E1F] text-[#3F2E1F]'
-                  : 'text-gray-600'
-              }
-            />
-          </button>
-        </div>
+                  {/* Wishlist */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleWishlistToggle(related);
+                    }}
+                    className="absolute top-2.5 right-2.5 bg-white rounded-full p-1.5 shadow-lg w-[27px] h-[27px] flex items-center justify-center"
+                  >
+                    <Heart
+                      size={14}
+                      className={
+                        isInWishlist(related)
+                          ? 'fill-[#3F2E1F] text-[#3F2E1F]'
+                          : 'text-gray-600'
+                      }
+                    />
+                  </button>
+                </div>
 
-        {/* Content */}
-        <div className="px-3.5 py-3.5 flex flex-col flex-1 gap-3.5">
-          <h3
-            className="font-bold uppercase text-center line-clamp-1 text-xl"
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              letterSpacing: '0.05em',
-              color: '#5A2408',
-            }}
-          >
-            {related.name}
-          </h3>
+                {/* Content */}
+                <div className="px-3.5 py-3.5 flex flex-col flex-1 gap-3.5">
+                  <h3
+                    className="font-bold uppercase text-center line-clamp-1 text-xl"
+                    style={{
+                      fontFamily: 'Playfair Display, serif',
+                      letterSpacing: '0.05em',
+                      color: '#5A2408',
+                    }}
+                  >
+                    {related.name}
+                  </h3>
 
-          {/* Rating */}
-          <div className="flex items-center justify-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                size={14}
-                style={{
-                  color: '#5A2408',
-                  fill: i < Math.floor(related.rating || 5) ? '#5A2408' : 'transparent',
-                }}
-                className={i < Math.floor(related.rating || 5) ? '' : 'opacity-30'}
-              />
+                  {/* Rating */}
+                  <div className="flex items-center justify-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={14}
+                        style={{
+                          color: '#5A2408',
+                          fill: i < Math.floor(related.rating || 5) ? '#5A2408' : 'transparent',
+                        }}
+                        className={i < Math.floor(related.rating || 5) ? '' : 'opacity-30'}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Description */}
+                  <p
+                    className="text-center line-clamp-2 text-sm"
+                    style={{
+                      fontFamily: 'Manrope, sans-serif',
+                      fontWeight: 500,
+                      color: '#7E513A',
+                    }}
+                  >
+                    {related.description || 'Premium fragrance'}
+                  </p>
+
+                  {/* Price */}
+                  <p
+                    className="font-bold text-center text-lg"
+                    style={{
+                      fontFamily: 'Manrope, sans-serif',
+                      color: '#431A06',
+                    }}
+                  >
+                    ${Number(related.price).toFixed(2)}
+                  </p>
+
+                  {/* BUTTON FIXED AT BOTTOM */}
+                  <div className="mt-auto">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(isScentPage ? `/scent/${related._id}` : `/product/${related._id}`);
+                      }}
+                      className="flex items-center justify-center text-white font-bold uppercase transition-all duration-300 w-full h-[54px] -mx-3.5 px-3.5"
+                      style={{
+                        backgroundColor: '#431A06',
+                        fontFamily: 'Manrope, sans-serif',
+                        letterSpacing: '0.05em',
+                        width: 'calc(100% + 28px)',
+                      }}
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
-
-          {/* Description */}
-          <p
-            className="text-center line-clamp-2 text-sm"
-            style={{
-              fontFamily: 'Manrope, sans-serif',
-              fontWeight: 500,
-              color: '#7E513A',
-            }}
-          >
-            {related.description || 'Premium fragrance'}
-          </p>
-
-          {/* Price */}
-          <p
-            className="font-bold text-center text-lg"
-            style={{
-              fontFamily: 'Manrope, sans-serif',
-              color: '#431A06',
-            }}
-          >
-            ${Number(related.price).toFixed(2)}
-          </p>
-
-          {/* BUTTON FIXED AT BOTTOM */}
-          <div className="mt-auto">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(isScentPage ? `/scent/${related._id}` : `/product/${related._id}`);
-              }}
-          className="flex items-center justify-center text-white font-bold uppercase transition-all duration-300 w-full h-[54px] -mx-3.5 px-3.5"
-              style={{
-                backgroundColor: '#431A06',
-                fontFamily: 'Manrope, sans-serif',
-                letterSpacing: '0.05em',
-            width: 'calc(100% + 28px)',
-              }}
-            >
-              View Details
-            </button>
-          </div>
         </div>
-      </motion.div>
-    ))}
-  </div>
-</div>
 
 
       </main>

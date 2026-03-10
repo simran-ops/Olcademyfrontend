@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { useCart } from '../CartContext';
+import CollectionHero from '../components/common/CollectionHero';
+
 import { useWishlist } from '../WishlistContext';
 import ScentService from '../services/scentService';
 import ProductCartSection from '../pages/ProductCartSection'; // cart sidebar component
@@ -143,12 +145,12 @@ const MensSignatureCollection = () => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8 }}
         transition={{ duration: 0.3 }}
-        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] min-h-[528px] flex flex-col justify-between border-none"
+        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col justify-between border-none"
         style={{ borderRadius: '0px' }}
         onClick={handleProductClick}
       >
         <div>
-          <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3" style={{ borderRadius: '0px' }}>
+          <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3" style={{ borderRadius: '0px' }}>
             <img
               src={scent.images?.[0] || "/images/default-scent.png"}
               alt={scent.name}
@@ -220,11 +222,10 @@ const MensSignatureCollection = () => {
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
-            className={`p-4 rounded-2xl shadow-lg backdrop-blur-sm max-w-sm ${
-              notification.type === 'success'
-                ? 'bg-green-500 text-white'
-                : 'bg-red-500 text-white'
-            }`}
+            className={`p-4 rounded-2xl shadow-lg backdrop-blur-sm max-w-sm ${notification.type === 'success'
+              ? 'bg-green-500 text-white'
+              : 'bg-red-500 text-white'
+              }`}
           >
             <div className="flex items-center space-x-3">
               {notification.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
@@ -246,23 +247,18 @@ const MensSignatureCollection = () => {
 
       <main className="flex-1">
         {/* BANNER SECTION */}
-        <section className="relative overflow-hidden w-full bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
-          <div className="relative w-full h-[400px] md:h-[400px] lg:h-[400px] flex items-center justify-center">
-            <img
-              src="/images/unisex.png"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center px-6">
-                <Star className="w-20 h-20 mx-auto text-purple-400 mb-6" />
-                <h1 className="text-6xl md:text-7xl font-bold text-white tracking-wider">
-                  Men's Signature Collection
-                </h1>
-              </div>
-            </div>
-          </div>
-        </section>
+        <CollectionHero
+          banner={{
+            title: "Men's Signature",
+            titleHighlight: "Collection",
+            description: "Explore the essence of masculinity with our most prestigious signature scents.",
+            backgroundImage: "/images/unisex.png",
+            buttonText: "Explore Collection",
+            buttonLink: "#products"
+          }}
+          fallbackImage="/images/unisex.png"
+        />
+
 
         {/* PRODUCTS GRID */}
         <section className="py-12 px-6">

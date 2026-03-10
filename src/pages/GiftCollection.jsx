@@ -2,17 +2,19 @@ import React, { useState, useEffect, useCallback, memo, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/common/Header';
 import Footer from '@/components/common/Footer';
+import CollectionHero from '../components/common/CollectionHero';
+
 import Button from '../components/ui/Button';
 import ProductCartSection from '../pages/ProductCartSection'; // ADD THIS IMPORT
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeIn } from '@/variants';
 import { useCart } from '@/CartContext';
 import { useWishlist } from '@/WishlistContext';
-import { 
-  ChevronRight, 
-  Gift, 
-  Heart, 
-  Crown, 
+import {
+  ChevronRight,
+  Gift,
+  Heart,
+  Crown,
   Star,
   CheckCircle,
   AlertCircle,
@@ -23,12 +25,25 @@ import {
 } from 'lucide-react';
 import { FiHeart } from 'react-icons/fi';
 import ProductService from '@/services/productService';
+import ProductCardsMobile from '../components/Mobile/ProductCardsMobile';
 
 const GiftCollection = () => {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   const { addToCart, isInCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+
+  // Mobile View Logic
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // State for gift collections from backend
   const [collections, setCollections] = useState({
@@ -157,7 +172,7 @@ const GiftCollection = () => {
     } catch (err) {
       console.error('❌ Error fetching gift data:', err);
       setError(err.message || 'Failed to load gift collections');
-      
+
       if (!isRetry) {
         addNotification('Failed to load some content. Please try refreshing the page.', 'error', null, 'general');
       }
@@ -211,7 +226,7 @@ const GiftCollection = () => {
     const handleAddToCart = async (e) => {
       e.stopPropagation();
       setIsAddingToCart(true);
-      
+
       const cartItem = {
         id: product._id.toString(),
         name: product.name,
@@ -247,7 +262,7 @@ const GiftCollection = () => {
 
       try {
         const wasInWishlist = isInWishlist(product._id);
-        
+
         const wishlistProduct = {
           id: product._id.toString(),
           name: product.name,
@@ -257,7 +272,7 @@ const GiftCollection = () => {
           category: product.category || '',
           selectedSize: null
         };
-        
+
         toggleWishlist(wishlistProduct);
         // UPDATED: Pass 'wishlist' as actionType with product name
         addNotification(
@@ -302,26 +317,25 @@ const GiftCollection = () => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
         transition={{ duration: 0.3 }}
-        // className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px]"
-                className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px] min-h-0 sm:min-h-[528px]"
-        
+        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px] flex flex-col"
+
         // style={{ height: 'auto', minHeight: '528px' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleCardClick}
       >
         {/* Image Container with Wishlist Icon */}
-        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[331/273] p-3">
+        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
           <motion.img
             src={getProductImage()}
             alt={product.name || 'Product'}
-            className="object-contain w-full h-full max-w-[248px] max-h-[248px]"
+            className="object-contain w-full h-full max-w-[160px] sm:max-w-[220px] max-h-[160px] sm:max-h-[220px]"
             onError={(e) => handleImageError(e, isHovered ? 'hover' : 'primary')}
             animate={{ scale: isHovered ? 1.08 : 1 }}
             transition={{ duration: 0.4 }}
             loading="lazy"
           />
-          
+
           {/* Wishlist Heart Icon */}
           <motion.button
             onClick={handleWishlistToggle}
@@ -338,28 +352,18 @@ const GiftCollection = () => {
         </div>
 
         {/* Product Info Container */}
-        <div className="px-3.5 py-3.5 flex flex-col gap-3.5">
+        <div className="px-3 py-3 flex flex-col gap-2.5 flex-grow">
           {/* Product Name */}
-          {/* <h3 
-            className="font-bold uppercase text-center line-clamp-1 text-lg sm:text-xl md:text-2xl"
+          <h3
+            className="font-bold uppercase text-center line-clamp-2 text-sm sm:text-lg"
             style={{
               fontFamily: 'Playfair Display, serif',
               letterSpacing: '0.05em',
               color: '#5A2408'
             }}
           >
-            {product.name || 'Product'}
-          </h3> */}
-            <h3
-           className="font-bold uppercase text-center line-clamp-2 text-lg sm:text-xl md:text-2xl"
-            style={{
-            fontFamily: 'Playfair Display, serif',
-             letterSpacing: '0.05em',
-             color: '#5A2408'
-             }}
-             >
-              {product.name || 'Unnamed Gift'}
-             </h3>
+            {product.name || 'Unnamed Gift'}
+          </h3>
           {/* Rating */}
           <div className="flex items-center justify-center gap-1">
             {product.rating ? (
@@ -367,20 +371,20 @@ const GiftCollection = () => {
                 {[...Array(5)].map((_, index) => (
                   <Star
                     key={index}
-                    size={14}
+                    size={12}
                     style={{ color: '#5A2408', fill: index < Math.floor(product.rating) ? '#5A2408' : 'transparent' }}
                     className={`${index < Math.floor(product.rating) ? '' : 'opacity-30'}`}
                   />
                 ))}
               </>
             ) : (
-              <div className="h-3.5"></div>
+              <div className="h-3"></div>
             )}
           </div>
 
           {/* Description */}
-          <p 
-            className="text-center line-clamp-2 text-sm sm:text-base"
+          <p
+            className="text-center line-clamp-2 text-[10px] sm:text-xs"
             style={{
               fontFamily: 'Manrope, sans-serif',
               fontWeight: '500',
@@ -392,8 +396,8 @@ const GiftCollection = () => {
           </p>
 
           {/* Price */}
-          <p 
-            className="font-bold text-center text-lg sm:text-xl"
+          <p
+            className="font-bold text-center text-sm sm:text-base"
             style={{
               fontFamily: 'Manrope, sans-serif',
               letterSpacing: '0.02em',
@@ -405,22 +409,22 @@ const GiftCollection = () => {
 
           {/* UPDATED Add to Cart Button - Opens Cart Sidebar when product is in cart */}
           <motion.button
-            onClick={productInCart ? (e) => { 
-              e.stopPropagation(); 
+            onClick={productInCart ? (e) => {
+              e.stopPropagation();
               setIsCartOpen(true); // CHANGED: Opens cart sidebar instead of navigating
             } : handleAddToCart}
             disabled={isAddingToCart}
             whileHover={{ scale: 1.02, opacity: 0.9 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center justify-center gap-2 sm:gap-2.5 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[54px] sm:h-[60px] text-sm sm:text-base md:text-lg -mx-3.5 px-3.5"
+            className="flex items-center justify-center gap-2 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[40px] sm:h-[45px] text-[10px] sm:text-xs md:text-sm -mx-3 px-3 mt-auto"
             style={{
               backgroundColor: productInCart ? '#431A06' : '#431A06',
               fontFamily: 'Manrope, sans-serif',
               letterSpacing: '0.05em',
-              width: 'calc(100% + 28px)'
+              width: 'calc(100% + 24px)'
             }}
           >
-            <ShoppingCart size={20} className="sm:w-[24px] sm:h-[24px]" />
+            <ShoppingCart size={16} className="sm:w-[18px] sm:h-[18px]" />
             <span>
               {isAddingToCart ? 'Adding...' : productInCart ? 'View Cart' : 'Add to Cart'}
             </span>
@@ -449,7 +453,7 @@ const GiftCollection = () => {
       >
         <div className="max-w-[1555px] mx-auto">
           <div className="text-center mb-7 sm:mb-10 lg:mb-14">
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif', color: darkMode ? '#f6d110' : '#271004' }}>
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif', color: darkMode ? '#f6d110' : '#271004' }}>
               {title}
             </h3>
             <div className="w-24 h-1 bg-gradient-to-r from-[#79300f] to-[#5a2408] rounded-full mx-auto"></div>
@@ -461,39 +465,50 @@ const GiftCollection = () => {
             </div>
           ) : products.length > 0 ? (
             <>
-              {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center"> */}
-             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center">
-                
-                {displayProducts.map((product) => {
-                  if (!product || !product._id) return null;
-                  return (
-                    <ProductCard key={product._id} product={product} />
-                  );
-                })}
-              </div>
+              {isMobile ? (
+                <ProductCardsMobile
+                  title={title}
+                  products={products}
+                  darkMode={darkMode}
+                  addNotification={addNotification}
+                  onProductClick={(product) => navigate(`/product/${product._id}`)}
+                />
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center">
 
-              {hasMoreProducts && (
-                <div className="flex justify-center mt-7 sm:mt-10 lg:mt-14">
-                  <button
-                    onClick={() => toggleSection(collectionKey)}
-                    className="border-2 transition-all duration-300 rounded-lg w-full max-w-[311px] h-[54px] sm:h-[60px] px-5 flex items-center justify-center"
-                    style={{
-                      borderColor: '#431A06',
-                      backgroundColor: 'transparent',
-                      color: '#431A06'
-                    }}
-                  >
-                    <span
-                      className="text-base sm:text-lg font-bold uppercase"
-                      style={{
-                        fontFamily: 'Manrope, sans-serif',
-                        letterSpacing: '0.05em'
-                      }}
-                    >
-                      {isExpanded ? 'Show Less' : 'View All Gifts'}
-                    </span>
-                  </button>
-                </div>
+                    {displayProducts.map((product) => {
+                      if (!product || !product._id) return null;
+                      return (
+                        <ProductCard key={product._id} product={product} />
+                      );
+                    })}
+                  </div>
+
+                  {hasMoreProducts && (
+                    <div className="flex justify-center mt-7 sm:mt-10 lg:mt-14">
+                      <button
+                        onClick={() => toggleSection(collectionKey)}
+                        className="border-2 transition-all duration-300  w-full max-w-[250px] h-[40px] sm:h-[48px] px-5 flex items-center justify-center"
+                        style={{
+                          borderColor: '#431A06',
+                          backgroundColor: 'transparent',
+                          color: '#431A06'
+                        }}
+                      >
+                        <span
+                          className="text-base sm:text-lg font-bold uppercase"
+                          style={{
+                            fontFamily: 'Manrope, sans-serif',
+                            letterSpacing: '0.05em'
+                          }}
+                        >
+                          {isExpanded ? 'Show Less' : 'View All Gifts'}
+                        </span>
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </>
           ) : (
@@ -524,7 +539,7 @@ const GiftCollection = () => {
       subtitle: 'Premium Collection',
       description: 'From the crisp of the tissue paper to the last loop of the bow, it has to be just right. Whether it\'s a token of appreciation or the grandest of gestures.',
       buttonText: 'Shop Now',
-      buttonLink: '#collections',
+      buttonLink: '#collection-for_her',
       backgroundImage: '/images/gift-hero-bg.jpg'
     };
 
@@ -547,7 +562,7 @@ const GiftCollection = () => {
     return (
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F5E9DC] via-[#E7DDC6] to-[#D4C5A9] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"></div>
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 grid lg:grid-cols-2 gap-16 items-center">
           <div className="text-center lg:text-left space-y-8">
             <div className="space-y-6">
@@ -557,7 +572,7 @@ const GiftCollection = () => {
                   {bannerData.subtitle}
                 </span>
               </div>
-              
+
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 <span className="bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 bg-clip-text text-transparent">
                   Perfect
@@ -567,12 +582,12 @@ const GiftCollection = () => {
                   {bannerData.title}
                 </span>
               </h1>
-              
+
               <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
                 {bannerData.description}
               </p>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={handleClick}
@@ -581,7 +596,7 @@ const GiftCollection = () => {
                 <span className="text-lg">{bannerData.buttonText}</span>
                 <ChevronRight size={20} />
               </button>
-              
+
               <button
                 onClick={() => navigate('/wishlist-collection')}
                 className="border-2 border-[#79300f] text-gray-700 dark:text-gray-300 hover:border-[#79300f] hover:text-[#79300f] dark:hover:border-[#f6d110] dark:hover:text-[#f6d110] font-semibold py-4 px-8 transition-all duration-300 flex items-center justify-center space-x-3"
@@ -592,7 +607,7 @@ const GiftCollection = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="relative">
             <div className="relative overflow-hidden shadow-2xl">
               <img
@@ -615,7 +630,7 @@ const GiftCollection = () => {
   // Bottom Banners Section
   const BottomBannersSection = () => {
     const bottomBanners = banners.gift_highlight.slice(0, 3);
-    
+
     const defaultBottomBanners = [
       {
         title: "Personalized Gifts",
@@ -628,7 +643,7 @@ const GiftCollection = () => {
         title: "Gift Cards Available",
         description: "When you can't decide, give them the choice with our luxury gift cards.",
         buttonText: "Buy Gift Cards",
-        buttonLink: "/gift-cards", 
+        buttonLink: "/gift-cards",
         image: "/images/gift-cards-banner.jpg"
       },
       {
@@ -697,16 +712,16 @@ const GiftCollection = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <h3 className="text-2xl font-bold text-[#79300f] dark:text-[#f6d110] group-hover:text-[#5a2408] dark:group-hover:text-[#f6d110] transition-colors duration-300">
                       {banner.title}
                     </h3>
-                    
+
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                       {banner.description}
                     </p>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -755,7 +770,7 @@ const GiftCollection = () => {
             category: quickViewProduct.category || '',
             selectedSize: null
           };
-          
+
           const wasInWishlist = isInWishlist(quickViewProduct._id);
           toggleWishlist(wishlistProduct);
           // UPDATED: Pass 'wishlist' as actionType with product name
@@ -835,7 +850,7 @@ const GiftCollection = () => {
                 ×
               </button>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <img
@@ -847,7 +862,7 @@ const GiftCollection = () => {
                   }}
                 />
               </div>
-              
+
               <div className="space-y-4">
                 <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                   {quickViewProduct.name}
@@ -858,7 +873,7 @@ const GiftCollection = () => {
                 <p className="text-2xl font-bold text-[#79300f] dark:text-[#f6d110]">
                   ${quickViewProduct.price.toFixed(2)}
                 </p>
-                
+
                 <div className="flex gap-4">
                   {productInQuickViewCart ? (
                     <button
@@ -1102,85 +1117,100 @@ const GiftCollection = () => {
 
   return (
     <>
-    <Header darkMode={darkMode} setDarkMode={setDarkMode} />
-    <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#0d0603] text-[#79300f] dark:text-[#f6d110]">
-      
-      {/* HEADER */}
-      {/* <Header darkMode={darkMode} setDarkMode={setDarkMode} /> */}
-  
-      {/* PAGE BODY */}
-      {loading ? (
-        <LoadingState />
-      ) : error ? (
-        <ErrorState />
-      ) : (
-        <>
-          <NotificationSystem />
-          <QuickViewModal />
-  
-      {/* CART SIDEBAR - ADD THIS */}
-      <ProductCartSection isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-  
-          <HeroBanner banner={banners.hero} />
-  
-          <div id="collections">
+      <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+      <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#0d0603] text-[#79300f] dark:text-[#f6d110]">
+
+        {/* HEADER */}
+        {/* <Header darkMode={darkMode} setDarkMode={setDarkMode} /> */}
+
+        {/* PAGE BODY */}
+        {loading ? (
+          <LoadingState />
+        ) : error ? (
+          <ErrorState />
+        ) : (
+          <>
+            <NotificationSystem />
+            <QuickViewModal />
+
+            <ProductCartSection isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+            {/* Hero Section */}
+            {banners.hero ? (
+              <DynamicBanner banner={banners.hero} type="hero" />
+            ) : (
+              <CollectionHero
+                banner={{
+                  title: "Luxury Gifts",
+                  subtitle: "Premium Collection",
+                  description: "From the crisp of the tissue paper to the last loop of the bow, it has to be just right. Whether it's a token of appreciation or the grandest of gestures.",
+                  backgroundImage: "/images/gift-hero-bg.jpg",
+                  buttonText: "Shop Now",
+                  buttonLink: "#collection-for_her"
+                }}
+                fallbackImage="/images/gift-hero-bg.jpg"
+              />
+            )}
+
+
+
+            <div id="collections">
+              <CollectionSection
+                title="Gifts For Her"
+                collectionKey="for_her"
+              />
+            </div>
+
             <CollectionSection
-              title="Gifts For Her"
-              collectionKey="for_her"
+              title="Gifts For Him"
+              collectionKey="for_him"
               visibleCount={4}
             />
-          </div>
-  
-          <CollectionSection
-            title="Gifts For Him"
-            collectionKey="for_him"
-            visibleCount={4}
-          />
-  
-          <CollectionSection
-            title="Gifts Under $50"
-            collectionKey="by_price_under_50"
-            visibleCount={4}
-          />
-  
-          <CollectionSection
-            title="Gifts Under $100"
-            collectionKey="by_price_under_100"
-            visibleCount={4}
-          />
-  
-          <CollectionSection
-            title="Gifts Under $200"
-            collectionKey="by_price_under_200"
-            visibleCount={4}
-          />
-  
-          <CollectionSection
-            title="Home & Living"
-            collectionKey="home_gift"
-            visibleCount={4}
-          />
-  
-          <CollectionSection
-            title="Birthday Celebrations"
-            collectionKey="birthday_gift"
-            visibleCount={4}
-          />
 
-      <CollectionSection
-        title="Wedding Gifts"
-        collectionKey="wedding_gift"
-        visibleCount={4}
-      />
-  
-          <BottomBannersSection />
-        </>
-      )}
-  
-      <Footer />
-    </div>
+            <CollectionSection
+              title="Gifts Under $50"
+              collectionKey="by_price_under_50"
+              visibleCount={4}
+            />
+
+            <CollectionSection
+              title="Gifts Under $100"
+              collectionKey="by_price_under_100"
+              visibleCount={4}
+            />
+
+            <CollectionSection
+              title="Gifts Under $200"
+              collectionKey="by_price_under_200"
+              visibleCount={4}
+            />
+
+            <CollectionSection
+              title="Home & Living"
+              collectionKey="home_gift"
+              visibleCount={4}
+            />
+
+            <CollectionSection
+              title="Birthday Celebrations"
+              collectionKey="birthday_gift"
+              visibleCount={4}
+            />
+
+            <CollectionSection
+              title="Wedding Gifts"
+              collectionKey="wedding_gift"
+              visibleCount={4}
+            />
+
+            <BottomBannersSection />
+          </>
+        )}
+
+        <Footer />
+      </div>
     </>
   );
 };
 
-      export default GiftCollection;
+export default GiftCollection;

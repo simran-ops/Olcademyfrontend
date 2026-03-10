@@ -92,7 +92,7 @@ const ProductCardsMobile = ({ title, products = [], darkMode, addNotification })
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ duration: 0.3 }}
-        className="bg-white shadow-md overflow-hidden w-full"
+        className="bg-white shadow-md overflow-hidden w-full flex flex-col"
         onClick={() => navigate(`/product/${product._id}`)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -122,7 +122,7 @@ const ProductCardsMobile = ({ title, products = [], darkMode, addNotification })
           </button>
         </div>
 
-        <div className="px-3 py-3 flex flex-col gap-2">
+        <div className="px-3 py-3 flex flex-col gap-2 flex-grow">
           <h3
             className="font-bold uppercase text-center text-sm"
             style={{ fontFamily: 'Playfair Display, serif', color: '#5A2408' }}
@@ -160,7 +160,7 @@ const ProductCardsMobile = ({ title, products = [], darkMode, addNotification })
           <button
             onClick={productInCart ? () => navigate('/cart') : handleAddToCart}
             disabled={isAddingToCart}
-            className="flex items-center justify-center gap-2 text-white font-bold uppercase h-[42px] w-full text-xs"
+            className="flex items-center justify-center gap-2 text-white font-bold uppercase h-[42px] w-full text-xs mt-auto"
             style={{ backgroundColor: '#431A06' }}
           >
             <ShoppingCart size={16} />

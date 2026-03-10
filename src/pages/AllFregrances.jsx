@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import Header from '../components/common/Header';
 import Footer from '@/components/common/Footer';
+import CollectionHero from '../components/common/CollectionHero';
+
 import amberNocturne1 from './Men/assets/aventus1.jpg';
 import { motion } from 'framer-motion';
 import { fadeIn } from '../variants';
@@ -34,49 +36,17 @@ const AllFragrancesSection = () => {
       <Header darkMode={darkMode} setDarkMode={setDarkMode} />
 
       {/* Banner Section */}
-      <motion.section
-        variants={fadeIn("up", 0.2)}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, amount: 0.4 }}
-        className="relative h-[500px] bg-[#3a1c0e] dark:bg-[#220104] text-white flex items-center justify-center text-center"
-      >
-        <motion.img
-          variants={fadeIn("left", 0.4)}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, amount: 0.4 }}
-          src={amberNocturne1}
-          alt="All Fragrances Banner"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <motion.div
-          variants={fadeIn("up", 0.4)}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, amount: 0.4 }}
-          className="relative z-10 px-4"
-        >
-          <motion.h2
-            variants={fadeIn("up", 0.2)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: false, amount: 0.7 }}
-            className="text-5xl font-semibold mb-4"
-          >
-            All Fragrances
-          </motion.h2>
-          <motion.p
-            variants={fadeIn("up", 0.4)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: false, amount: 0.4 }}
-            className="max-w-xl mx-auto text-lg"
-          >
-            Discover the complete collection of Creed fragrances exclusively on the official Creed online boutique. Creating iconic hand-crafted perfume since 1760, Creed has established a legacy of acclaimed fragrances, treasured by perfume connoisseurs around the world for their quality, timelessness and sophistication.
-          </motion.p>
-        </motion.div>
-      </motion.section>
+      <CollectionHero
+        banner={{
+          title: "All Fragrances",
+          description: "Discover the complete collection of Creed fragrances exclusively on the official Creed online boutique. Creating iconic hand-crafted perfume since 1760, Creed has established a legacy of acclaimed fragrances, treasured by perfume connoisseurs around the world for their quality, timelessness and sophistication.",
+          backgroundImage: amberNocturne1,
+          buttonText: "Discover Collection",
+          buttonLink: "#mens-fragrances"
+        }}
+        fallbackImage={amberNocturne1}
+      />
+
 
       {/* Men’s Fragrances Grid */}
       <motion.section
