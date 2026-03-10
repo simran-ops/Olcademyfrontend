@@ -105,7 +105,7 @@ const Header = ({ darkMode, setDarkMode }) => {
 
   const isActiveNavItem = (path) => location.pathname === path;
 
-  const currentHeight = isMobile ? MOBILE_HEIGHT : (isScrolled ? STICKY_HEIGHT : INITIAL_HEIGHT);
+  const currentHeight = isMobile ? MOBILE_HEIGHT : STICKY_HEIGHT;
 
   const logoTop = isScrolled ? '18px' : '15px';
   const logoLeft = isScrolled ? '40px' : '50%';
@@ -218,16 +218,16 @@ const Header = ({ darkMode, setDarkMode }) => {
         <motion.header
           animate={{
             height: currentHeight,
-            backgroundColor: isScrolled ? '#ffffff' : '#F9F7F6',
-            borderBottomWidth: isScrolled ? '0px' : '1px'
+            backgroundColor: '#ffffff',  // Always white like when scrolled
+            borderBottomWidth: '0px'  // No border like when scrolled
           }}
           transition={{ duration: 0.3 }}
           className="fixed top-0 left-0 right-0 z-[9999]"
           style={{
             width: '100%',
-            height: INITIAL_HEIGHT,
+            height: STICKY_HEIGHT,  // Always use sticky height
             border: '1px solid #B59B8E',
-            backgroundColor: '#F9F7F6',
+            backgroundColor: '#ffffff',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)'
           }}
@@ -264,33 +264,63 @@ const Header = ({ darkMode, setDarkMode }) => {
                 <motion.img
                   src="/images/Logo.png"
                   alt="Logo"
-                  animate={{ scale: isScrolled ? 0.78 : 1 }}
+                  animate={{ scale: 0.78 }}
                   transition={{ duration: 0.25 }}
                   style={{ width: '90px', height: '45px', objectFit: 'contain' }}
                 />
               </Link>
             </div>
 
-            <div
-              className="absolute flex items-center transition-all duration-300"
+            {/* Center Section: Navigation */}
+            <motion.div
+              transition={{ duration: 0.3 }}
+              className="hidden md:flex items-center"
               style={{
-                width: isScrolled ? 'auto' : 'calc(100% - 104px)',
-                top: iconLayerTop,
-                left: isScrolled ? 'auto' : '52px',
-                right: '52px',
-                justifyContent: isScrolled ? 'flex-end' : 'space-between',
-                zIndex: 10002,
-                pointerEvents: 'auto'
+                gap: '12px',
+                pointerEvents: 'auto',
+                zIndex: 10000,
+                flex: 1,
+                justifyContent: 'center'
               }}
             >
-              <div
+              {navItems.map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    minWidth: navMinWidth,
+                    padding: navPadding,
+                    borderBottom: isActiveNavItem(item.path) ? '1px solid #341405' : 'none',
+                    textAlign: 'center'
+                  }}
+                >
+                  <Link
+                    to={item.path}
+                    className="hover:opacity-70"
+                    style={{
+                      fontFamily: 'Manrope',
+                      fontWeight: '400',
+                      fontSize: navFontSize,
+                      textTransform: 'uppercase',
+                      color: '#341405'
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Right Section: Icons */}
+            <div className="flex items-center" style={{ gap: '28px', flexShrink: 0 }}>
+              {/* KEPT: Original commented code for reference */}
+              {/* <div
                 className="flex items-center transition-all duration-300"
                 style={{
                   transform: isScrolled ? 'scale(0.95)' : 'scale(1)',
                   marginRight: isScrolled ? '18px' : '0px'
                 }}
               >
-                {/* <button
+                <button
                   onClick={toggleSearch}
                   style={{
                     width: '34px',
@@ -299,7 +329,7 @@ const Header = ({ darkMode, setDarkMode }) => {
                   }}
                 >
                   <FiSearch size={34} />
-                </button> */}
+                </button>
                 {!isScrolled && (
                   <button
                     onClick={toggleSearch}
@@ -312,7 +342,7 @@ const Header = ({ darkMode, setDarkMode }) => {
                     <FiSearch size={24} />
                   </button>
                 )}
-              </div>
+              </div> */}
 
               <div className="flex items-center" style={{ gap: '22px' }}>
                 <Link
@@ -343,17 +373,34 @@ const Header = ({ darkMode, setDarkMode }) => {
                   <FiShoppingCart size={24} />
                 </button>
 
-                {user ? (
-                  <div className="relative">
-                    <button
-                      onClick={toggleUserDropdown}
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={toggleUserDropdown}
+                    style={{
+                      width: '24px',  // Reduced from 34px
+                      height: '24px'
+                    }}
+                  >
+                    <div
+                      className="rounded-full flex items-center justify-center"
                       style={{
                         width: '26px',
                         height: '26px'
                       }}
                     >
-                      <div
-                        className="rounded-full flex items-center justify-center"
+                      {user.username ? user.username.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
+                    </div>
+                  </button>
+
+                  <AnimatePresence>
+                    {isUserDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full mt-2 right-0 shadow-lg"
                         style={{
                           width: '26px',
                           height: '26px',
@@ -362,26 +409,11 @@ const Header = ({ darkMode, setDarkMode }) => {
                           fontSize: '12px'
                         }}
                       >
-                        {user.username ? user.username.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
-                      </div>
-                    </button>
-
-                    <AnimatePresence>
-                      {isUserDropdownOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 8 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full mt-2 right-0 shadow-lg"
-                          style={{
-                            backgroundColor: '#F9F7F6',
-                            border: '1px solid #B59B8E',
-                            width: '200px',
-                            padding: '16px',
-                            zIndex: 10050,
-                            pointerEvents: 'auto'
-                          }}
+                        <Link
+                          to="/userProfile"
+                          onClick={() => setIsUserDropdownOpen(false)}
+                          className="block py-2"
+                          style={{ color: '#341405', fontSize: '16px' }}
                         >
                           <Link
                             to="/userProfile"
@@ -443,28 +475,18 @@ const Header = ({ darkMode, setDarkMode }) => {
                 <div
                   key={item.label}
                   style={{
-                    minWidth: navMinWidth,
-                    padding: navPadding,
-                    borderBottom: isActiveNavItem(item.path) ? '1px solid #341405' : 'none',
-                    textAlign: 'center'
+                    width: '24px',  // Reduced from 34px
+                    height: '24px',
+                    color: '#341405',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
-                  <Link
-                    to={item.path}
-                    className="hover:opacity-70"
-                    style={{
-                      fontFamily: 'Manrope',
-                      fontWeight: '400',
-                      fontSize: navFontSize,
-                      textTransform: 'uppercase',
-                      color: '#341405'
-                    }}
-                  >
-                    {item.label}
-                  </Link>
-                </div>
-              ))}
-            </motion.div>
+                  <FiUser size={24} />  {/* Reduced from 34 */}
+                </button>
+              )}
+            </div>
           </div>
         </motion.header>
       )}
