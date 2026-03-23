@@ -31,8 +31,12 @@ const Header = ({ darkMode, setDarkMode }) => {
   const [showLogoutNotification, setShowLogoutNotification] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const INITIAL_HEIGHT = 120;
-  const STICKY_HEIGHT = 80;
+  const DESKTOP_SCALE = 0.9; // ~10% smaller fonts/icons on desktop
+  const DESKTOP_HEIGHT_SCALE = 0.5; // ~50% less header height on desktop
+  const scalePx = (px) => `${Math.round(px * DESKTOP_SCALE)}px`;
+
+  const INITIAL_HEIGHT = Math.round(197 * DESKTOP_SCALE * DESKTOP_HEIGHT_SCALE);
+  const STICKY_HEIGHT = Math.round(120 * DESKTOP_SCALE * DESKTOP_HEIGHT_SCALE);
   const MOBILE_HEIGHT = 'auto';
   const SCROLL_THRESHOLD = 50;
 
@@ -107,18 +111,19 @@ const Header = ({ darkMode, setDarkMode }) => {
 
   const currentHeight = isMobile ? MOBILE_HEIGHT : STICKY_HEIGHT;
 
-  const logoTop = isScrolled ? '18px' : '15px';
-  const logoLeft = isScrolled ? '40px' : '50%';
-  const logoTransform = isScrolled ? 'translateX(0%)' : 'translateX(-50%)';
+  // Static positions - no animation
+  const logoTop = '28px';
+  const logoLeft = '52px';
+  const logoTransform = 'translateX(0%)';
 
-  const navLayerTop = isScrolled ? '18px' : '75px';
-  const iconLayerTop = isScrolled ? '22px' : '55px';
+  const navLayerTop = '22px';
+  const iconLayerTop = '26px';
 
-  const navFontSize = isScrolled ? '13px' : '14px';
-  const navPadding = isScrolled ? '2px 6px' : '8px 6px';
-  const navMinWidth = isScrolled ? '60px' : '90px';
+  const navFontSize = scalePx(18);
+  const navPadding = '2px 8px';
+  const navMinWidth = '80px';
 
-  const spacerHeight = isMobile ? 100 : INITIAL_HEIGHT;
+  const spacerHeight = isMobile ? 120 : STICKY_HEIGHT;
 
   return (
     <>
@@ -232,41 +237,32 @@ const Header = ({ darkMode, setDarkMode }) => {
             WebkitBackdropFilter: 'blur(8px)'
           }}
         >
-          <div className="relative w-full h-full max-w-full mx-auto px-[52px]">
-            <div
-              className="absolute flex items-center transition-all duration-300"
-              style={{
-                width: isScrolled ? 'auto' : '80px',
-                height: '40px',
-                top: logoTop,
-                left: logoLeft,
-                transform: logoTransform,
-                zIndex: 10001,
-                gap: isScrolled ? '12px' : '0'
-              }}
-            >
-              {isScrolled && (
-                <button
-                  onClick={toggleSearch}
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    color: '#341405',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <FiSearch size={22} />
-                </button>
-              )}
-              <Link to="/">
+          {/* MODIFIED: Changed from absolute positioning to flexbox for proper alignment */}
+          <div className="w-full h-full flex items-center justify-between px-[52px]">
+            
+            {/* Left Section: Search + Logo */}
+            <div className="flex items-center" style={{ gap: '12px', flexShrink: 0 }}>
+              <button
+                onClick={toggleSearch}
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  color: '#341405',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <FiSearch size={Math.round(24 * DESKTOP_SCALE)} />
+              </button>
+
+              <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
                 <motion.img
                   src="/images/Logo.png"
                   alt="Logo"
                   animate={{ scale: 0.78 }}
                   transition={{ duration: 0.25 }}
-                  style={{ width: '90px', height: '45px', objectFit: 'contain' }}
+                  style={{ width: scalePx(120), height: scalePx(60), objectFit: 'contain' }}
                 />
               </Link>
             </div>
@@ -334,44 +330,43 @@ const Header = ({ darkMode, setDarkMode }) => {
                   <button
                     onClick={toggleSearch}
                     style={{
-                      width: '26px',
-                      height: '26px',
+                      width: '34px',
+                      height: '34px',
                       color: '#341405'
                     }}
                   >
-                    <FiSearch size={24} />
+                    <FiSearch size={34} />
                   </button>
                 )}
               </div> */}
 
-              <div className="flex items-center" style={{ gap: '22px' }}>
-                <Link
-                  to="/wishlist-collection"
-                  style={{
-                    width: '26px',
-                    height: '26px',
-                    color: '#341405',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  <FiHeart size={24} />
-                </Link>
+              <Link
+                to="/wishlist-collection"
+                style={{
+                  width: '24px',  // Reduced from 34px
+                  height: '24px',
+                  color: '#341405',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <FiHeart size={Math.round(24 * DESKTOP_SCALE)} />
+              </Link>
 
-                <button
-                  onClick={openCart}
-                  style={{
-                    width: '26px',
-                    height: '26px',
-                    color: '#341405',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  <FiShoppingCart size={24} />
-                </button>
+              <button
+                onClick={openCart}
+                style={{
+                  width: '24px',  // Reduced from 34px
+                  height: '24px',
+                  color: '#341405',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <FiShoppingCart size={Math.round(24 * DESKTOP_SCALE)} />
+              </button>
 
               {user ? (
                 <div className="relative">
@@ -385,8 +380,11 @@ const Header = ({ darkMode, setDarkMode }) => {
                     <div
                       className="rounded-full flex items-center justify-center"
                       style={{
-                        width: '26px',
-                        height: '26px'
+                        width: '24px',  // Reduced from 34px
+                        height: '24px',
+                        backgroundColor: '#341405',
+                        color: '#fff',
+                        fontSize: scalePx(12)
                       }}
                     >
                       {user.username ? user.username.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
@@ -402,78 +400,40 @@ const Header = ({ darkMode, setDarkMode }) => {
                         transition={{ duration: 0.2 }}
                         className="absolute top-full mt-2 right-0 shadow-lg"
                         style={{
-                          width: '26px',
-                          height: '26px',
-                          backgroundColor: '#341405',
-                          color: '#fff',
-                          fontSize: '12px'
+                          backgroundColor: '#F9F7F6',
+                          border: '1px solid #B59B8E',
+                          width: '200px',
+                          padding: '16px',
+                          zIndex: 10050,
+                          pointerEvents: 'auto'
                         }}
                       >
                         <Link
                           to="/userProfile"
                           onClick={() => setIsUserDropdownOpen(false)}
                           className="block py-2"
-                          style={{ color: '#341405', fontSize: '16px' }}
+                          style={{ color: '#341405', fontSize: scalePx(16) }}
                         >
-                          <Link
-                            to="/userProfile"
-                            onClick={() => setIsUserDropdownOpen(false)}
-                            className="block py-2"
-                            style={{ color: '#341405', fontSize: '16px' }}
-                          >
-                            My Profile
-                          </Link>
+                          My Profile
+                        </Link>
 
-                          <button
-                            onClick={() => {
-                              setIsLogoutModalOpen(true);
-                              setIsUserDropdownOpen(false);
-                            }}
-                            className="block w-full text-left py-2"
-                            style={{ color: '#341405', fontSize: '16px' }}
-                          >
-                            Logout
-                          </button>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setIsSignupOpen(true)}
-                    style={{
-                      width: '26px',
-                      height: '26px',
-                      color: '#341405',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <FiUser size={24} />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <motion.div
-              animate={{ top: navLayerTop }}
-              transition={{ duration: 0.3 }}
-              className="absolute hidden md:flex items-center"
-              style={{
-                width: '100%',
-                left: 0,
-                transform: 'translateX(0)',
-                justifyContent: 'center',
-                gap: '12px',
-                height: '40px',
-                pointerEvents: 'auto',
-                zIndex: 10000
-              }}
-            >
-              {navItems.map((item) => (
-                <div
-                  key={item.label}
+                        <button
+                          onClick={() => {
+                            setIsLogoutModalOpen(true);
+                            setIsUserDropdownOpen(false);
+                          }}
+                          className="block w-full text-left py-2"
+                          style={{ color: '#341405', fontSize: scalePx(16) }}
+                        >
+                          Logout
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setIsSignupOpen(true)}
                   style={{
                     width: '24px',  // Reduced from 34px
                     height: '24px',
@@ -483,7 +443,7 @@ const Header = ({ darkMode, setDarkMode }) => {
                     alignItems: 'center'
                   }}
                 >
-                  <FiUser size={24} />  {/* Reduced from 34 */}
+                  <FiUser size={Math.round(24 * DESKTOP_SCALE)} />
                 </button>
               )}
             </div>
@@ -640,7 +600,7 @@ const Header = ({ darkMode, setDarkMode }) => {
             exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 0.3 }}
             className="fixed top-24 right-8 bg-green-600 text-white px-6 py-4 shadow-2xl flex items-center gap-3 z-[10060]"
-            style={{
+            style={{ 
               zIndex: 10060,
               borderRadius: '8px'
             }}

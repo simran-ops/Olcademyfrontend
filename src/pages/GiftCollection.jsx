@@ -1137,7 +1137,7 @@ const GiftCollection = () => {
 
             {/* Hero Section */}
             {banners.hero ? (
-              <DynamicBanner banner={banners.hero} type="hero" />
+              <HeroBanner banner={banners.hero} />
             ) : (
               <CollectionHero
                 banner={{
