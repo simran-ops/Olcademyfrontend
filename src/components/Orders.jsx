@@ -254,7 +254,9 @@ const Orders = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+            // className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+              // className="group sm:col-span-2 lg:col-span-1 bg-gradient-to-br from-[#F5E9DC] to-[#E7DDC6] dark:from-[#3d1a0a] dark:to-[#2c0f06] border border-[#79300f]/20 dark:border-[#f6d110]/30 rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
           >
             {[
               {

@@ -142,7 +142,7 @@ const ProductCartSection = ({ isOpen, onClose }) => {
 
         {/* Sliding Cart */}
         <aside
-          className={`relative h-full w-full max-w-[50vw] bg-[#F9F7F6] shadow-xl flex flex-col pointer-events-auto outline-none transform transition-transform duration-300 ease-in-out
+       className={`relative h-full w-full max-w-[100vw] sm:max-w-[50vw] bg-[#F9F7F6] shadow-xl flex flex-col pointer-events-auto outline-none transform transition-transform duration-300 ease-in-out
             ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
         >
           <div className="flex justify-between items-center px-4 pb-5 pt-7 border-b border-[#EAE1DC]">
@@ -154,7 +154,7 @@ const ProductCartSection = ({ isOpen, onClose }) => {
                 <button
                   onClick={clearCart}
                   disabled={loading}
-                  className="ml-28 md:ml-20 text-[#5A2408] border border-[#5A2408]  px-4 py-1 text-sm font-medium hover:bg-[#EAE1DC] transition"
+                  className="ml-4 md:ml-20 text-[#5A2408] border border-[#5A2408]  px-4 py-1 text-sm font-medium hover:bg-[#EAE1DC] transition"
                 >
                   {loading ? 'Clearing...' : 'Clear Cart'}
                 </button>
