@@ -259,14 +259,15 @@ const MensCollection = () => {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8, boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}
         transition={{ duration: 0.3 }}
-        // className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[331px]"
-        className="bg-white dark:bg-gray-800 overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 w-full max-w-[290px] min-h-0 sm:min-h-[420px]"
-        // style={{ height: 'auto', minHeight: '528px' }}
+        className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 w-full"
+         style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}
+
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleCardClick}
       >
-        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3">
+        {/* <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full aspect-[290/240] p-3"> */}
+        <div className="relative bg-white dark:bg-gray-700 flex items-center justify-center overflow-hidden w-full h-[200px] p-6">
           <motion.img
             src={getProductImage()}
             alt={product.name || 'Product'}
@@ -290,81 +291,88 @@ const MensCollection = () => {
             />
           </motion.button>
         </div>
+        <div className="px-4 pt-3 pb-4 flex flex-col gap-2">
 
-        <div className="px-3 py-3 flex flex-col gap-2.5">
-          <h3
-            className="font-bold uppercase text-center line-clamp-2 text-sm sm:text-lg"
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              letterSpacing: '0.05em',
-              color: '#5A2408'
-            }}
-          >
-            {product.name || 'Unnamed Gift'}
-          </h3>
+    {/* Name + Rating row — inline, space-between */}
+  <div className="flex items-start justify-between gap-2">
+    <h3
+  className="font-bold uppercase line-clamp-2 leading-tight flex-1"
+  style={{
+    fontFamily: 'Playfair Display, serif',
+    fontSize: '13px',
+    letterSpacing: '0.08em',
+    color: '#111111',
+    fontWeight: '700'
+  }}
+>
+      {product.name || 'Unnamed Gift'}
+    </h3>
+    {product.rating && (
+      <span
+  className="flex items-center gap-1 font-bold whitespace-nowrap self-start"
+  style={{
+    fontFamily: 'Lato, sans-serif',
+    fontSize: '13px',
+    color: '#111111',
+    lineHeight: '1'
+  }}
+>
+  {Number(product.rating).toFixed(1)}
+  <Star size={12} style={{ color: '#D4900A', fill: '#D4900A' }} />
+</span>
 
-          <div className="flex items-center justify-center gap-1">
-            {product.rating ? (
-              <>
-                {[...Array(5)].map((_, index) => (
-                  <Star
-                    key={index}
-                    size={12}
-                    style={{ color: '#5A2408', fill: index < Math.floor(product.rating) ? '#5A2408' : 'transparent' }}
-                    className={`${index < Math.floor(product.rating) ? '' : 'opacity-30'}`}
-                  />
-                ))}
-              </>
-            ) : (
-              <div className="h-3"></div>
-            )}
-          </div>
+    )}
+  </div>
 
-          <p
-            className="text-center line-clamp-2 text-[10px] sm:text-xs"
-            style={{
-              fontFamily: 'Manrope, sans-serif',
-              fontWeight: '500',
-              letterSpacing: '0.02em',
-              color: '#7E513A'
-            }}
-          >
-            {product.description || 'Premium fragrance'}
-          </p>
-
-          <p
-            className="font-bold text-center text-sm sm:text-base"
-            style={{
-              fontFamily: 'Manrope, sans-serif',
-              letterSpacing: '0.02em',
-              color: '#431A06'
-            }}
-          >
-            ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
-          </p>
-
-          <motion.button
-            onClick={productInCart ? (e) => {
-              e.stopPropagation();
-              setIsCartOpen(true);
-            } : handleAddToCart}
-            disabled={isAddingToCart}
-            whileHover={{ scale: 1.02, opacity: 0.9 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex items-center justify-center gap-2 sm:gap-2.5 text-white font-bold uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full h-[40px] sm:h-[45px] text-xs sm:text-sm md:text-base -mx-3 px-3"
-            style={{
-              backgroundColor: productInCart ? '#431A06' : '#431A06',
-              fontFamily: 'Manrope, sans-serif',
-              letterSpacing: '0.05em',
-              width: 'calc(100% + 24px)'
-            }}
-          >
-            <ShoppingCart size={16} className="sm:w-[18px] sm:h-[18px]" />
-            <span>
-              {isAddingToCart ? 'Adding...' : productInCart ? 'View Cart' : 'Add to Cart'}
-            </span>
-          </motion.button>
-        </div>
+  {/* Price — bold, black, left-aligned */}
+   <p
+  className="font-bold"
+  style={{
+    fontFamily: 'Montserrat, Lato, sans-serif',
+    fontSize: '15px',
+    color: '#111111',
+    marginTop: '2px',
+    letterSpacing: '0.01em'
+  }}
+>
+  ₹{Number(product.price).toLocaleString('en-IN')}
+</p>
+  {/* ADD TO CART button — full-width, black */}
+  <motion.button
+  onClick={productInCart ? (e) => { e.stopPropagation(); setIsCartOpen(true); } : handleAddToCart}
+  disabled={isAddingToCart}
+  whileHover={{ opacity: 0.88 }}
+  whileTap={{ scale: 0.98 }}
+  className="flex items-center justify-center gap-2 text-white font-bold uppercase w-full disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+  style={{
+    backgroundColor: '#111111',
+    fontFamily: 'Montserrat, Lato, sans-serif',
+    fontSize: '11px',
+    letterSpacing: '0.1em',
+    height: '44px',
+    borderRadius: '5px',
+    marginTop: '4px'
+  }}
+>
+  {/* Shopping BAG icon — matches Figma, not a cart */}
+  <svg
+    width="15" height="15"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <path d="M16 10a4 4 0 01-8 0"/>
+  </svg>
+  <span>
+    {isAddingToCart ? 'ADDING...' : productInCart ? 'VIEW CART' : 'ADD TO CART'}
+  </span>
+</motion.button>
+</div>
       </motion.div>
     );
   });
@@ -381,8 +389,8 @@ const MensCollection = () => {
     const hasMoreProducts = products.length > 4;
 
     return (
-      <section className="py-10 sm:py-14 lg:py-16 px-4 sm:px-6 bg-[#F8F6F3] dark:bg-[#0d0603]">
-        <div className="max-w-[1555px] mx-auto">
+      <section className="py-10 sm:py-14 lg:py-16 px-4 sm:px-6 bg-[#EEF2F9] dark:bg-[#0d0603]">
+        <div className="max-w-[1216px] mx-auto">
           <motion.h3
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -406,7 +414,9 @@ const MensCollection = () => {
                 layout
                 //   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center"
                 // >
-                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7 lg:gap-10 mb-7 sm:mb-10 justify-items-center">
+                // className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-7  mb-7 sm:mb-10 justify-items-center">
+                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-7 sm:mb-10">
+
                 <AnimatePresence mode="popLayout">
                   {displayProducts.map((product) => {
                     if (!product || !product._id) return null;
@@ -418,29 +428,26 @@ const MensCollection = () => {
               </motion.div>
 
               {hasMoreProducts && (
-                <div className="flex justify-center mt-7 sm:mt-10 lg:mt-14">
-                  <motion.button
-                    onClick={() => toggleSection(sectionKey)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="border-2 transition-all duration-300  w-full max-w-[250px] h-[40px] sm:h-[48px] px-5 flex items-center justify-center"
-                    style={{
-                      borderColor: '#431A06',
-                      backgroundColor: 'transparent',
-                      color: '#431A06'
-                    }}
-                  >
-                    <span
-                      className="text-base sm:text-lg font-bold uppercase"
-                      style={{
-                        fontFamily: 'Manrope, sans-serif',
-                        letterSpacing: '0.05em'
-                      }}
-                    >
-                      {isExpanded ? 'Show Less' : 'View all Fragrances'}
-                    </span>
-                  </motion.button>
-                </div>
+               <div className="flex justify-end mt-6">
+                <motion.button
+               onClick={() => toggleSection(sectionKey)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="border transition-all duration-300 h-[48px] px-8 flex items-center justify-center whitespace-nowrap"
+                style={{
+                  borderColor: '#111',
+                 backgroundColor: 'transparent',
+                 color: '#111'
+            }}
+  >
+    <span
+      className="text-sm font-bold uppercase tracking-widest"
+      style={{ fontFamily: 'Lato, sans-serif' }}
+    >
+      {isExpanded ? 'Show Less' : 'View More'}
+    </span>
+  </motion.button>
+</div>
               )}
             </>
           ) : (
@@ -477,7 +484,7 @@ const MensCollection = () => {
       return (
         <CollectionHero
           banner={banner}
-          fallbackImage="/images/baner1.jpeg"
+          fallbackImage="/images/perfume-spray.png"
           onBannerClick={handleBannerClick}
         />
       );
@@ -540,10 +547,10 @@ const MensCollection = () => {
                 transition={{ delay: 0.5 }}
               >
                 <Button
-                  onClick={handleClick}
-                  className="bg-gradient-to-r from-[#79300f] to-[#5a2408] hover:from-[#5a2408] hover:to-[#79300f] text-white px-7 sm:px-9 py-3.5 sm:py-4.5 text-base sm:text-lg font-semibold  shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-                >
-                  {banner.buttonText}
+                onClick={handleClick}
+                className="bg-[#C9A84C] hover:bg-[#b8973d] text-white px-7 sm:px-9 py-3.5 sm:py-4.5 text-base sm:text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                 >
+                {banner.buttonText}
                 </Button>
               </motion.div>
             </motion.div>
@@ -600,10 +607,10 @@ const MensCollection = () => {
                 {banner.description}
               </p>
               <Button
-                onClick={handleClick}
-                className="bg-gradient-to-r from-[#79300f] to-[#5a2408] hover:from-[#5a2408] hover:to-[#79300f] text-white px-8 py-4 text-lg font-semibold "
+               onClick={handleClick}
+               className="bg-[#C9A84C] hover:bg-[#b8973d] text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105"
               >
-                {banner.buttonText}
+               {banner.buttonText}
               </Button>
             </div>
             <div className="relative h-[400px]">
@@ -803,28 +810,7 @@ const MensCollection = () => {
 
       <main>
         {/* Hero Section */}
-        <motion.section
-          variants={fadeIn('up', 0.2)}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, amount: 0.2 }}
-          className="text-center px-4 sm:px-6 py-6 sm:py-8 lg:py-10 bg-white dark:from-[#0d0603] dark:to-[#1a1410]"
-        >
-          <motion.h1
-            variants={fadeIn('up', 0.3)}
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 leading-[120%] text-[#271004] dark:text-[#f6d110]"
-            style={{ fontFamily: 'Playfair Display, serif' }}
-          >
-            Men's Scents
-          </motion.h1>
-          <motion.p
-            variants={fadeIn('up', 0.4)}
-            className="text-sm sm:text-base lg:text-lg leading-relaxed max-w-[734px] mx-auto text-[#3A3A3A] dark:text-gray-300 px-4"
-            style={{ letterSpacing: '0.02em', fontFamily: 'Manrope, sans-serif' }}
-          >
-            Bold, woody, and timeless scents crafted to embody strength and confidence.
-          </motion.p>
-        </motion.section>
+       
 
         {/* Dynamic Hero Banner */}
         {banners.hero && (

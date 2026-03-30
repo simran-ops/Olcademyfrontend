@@ -1,109 +1,167 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaInstagram, FaFacebookF, FaYoutube, FaLinkedinIn } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <footer className="bg-gradient-to-br from-[#1C160C] to-[#292218] px-6 md:px-16 lg:px-24 py-10 font-[Manrope] font-semibold text-sm md:text-base leading-[160%] tracking-wider">
-      {/* Top Section */}
-      <div className="flex flex-col md:flex-row justify-between mb-4 space-y-8 md:space-y-0">
-        {/* Address & Contact */}
-        <div className="space-y-2">
-          <p className="mb-1 bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent text-lg md:text-lg tracking-wider">
-            Address
-          </p>
-          <p className="text-xs opacity-80 mb-3 bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent md:text-[10px] lg:text-sm">
-            Vesarii Fragrance House, Paris, France
-          </p>
+    <footer className="w-full bg-[#E8E4DB]">
 
-          <div className="mt-6">
-            <p className="mb-1 bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent text-lg md:text-lg">
-              Contact
+      {/* ── SINGLE DASHED BOX — contains everything except bottom bar ── */}
+      <div className="flex justify-center px-6 pt-10 pb-6">
+        <div className="w-full max-w-[996px] px-10 py-10">
+
+          {/* Newsletter heading + form — centered */}
+          <div className="flex flex-col items-center text-center mb-8">
+            <h2
+              className="text-3xl font-bold text-[#1C1C1C] mb-3"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+            >
+              The Vesarii Inner Circle
+            </h2>
+            <p className="text-sm text-[#555] mb-7 leading-relaxed max-w-[480px]">
+              Private access to rare editions, secret previews, and Parisian inspirations.
             </p>
-            <p className="text-sm md:text-sm opacity-80 cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              +33 1 23 45 67
-            </p>
-            <p className="text-sm md:text-sm opacity-80 cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              contact@vesarii.com
+
+            <form onSubmit={handleSubmit} className="flex w-full max-w-[600px] mb-3">
+              <input
+                type="email"
+                placeholder="EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 px-4 py-3 text-xs tracking-widest text-[#999] bg-white outline-none border border-r-0 border-[#ccc] placeholder-[#bbb] uppercase"
+                style={{ fontFamily: 'Manrope, sans-serif' }}
+              />
+              <button
+                type="submit"
+                className="bg-[#1C1C1C] text-white text-xs font-bold uppercase tracking-widest px-6 py-3 whitespace-nowrap hover:bg-[#333] transition-colors"
+                style={{ fontFamily: 'Manrope, sans-serif' }}
+              >
+                JOIN THE CIRCLE
+              </button>
+            </form>
+
+            <p className="text-[11px] text-[#999] tracking-wide">
+              By joining, you'll receive updates on limited editions and private events.
             </p>
           </div>
-        </div>
 
-        {/* Links */}
-        <div className="grid grid-cols-2 gap-10 text-xs md:text-[10px] lg:text-sm transform -translate-x-0 lg:-translate-x-0">
-          <div className="space-y-3">
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Shop
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              About
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Journal
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Contact
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Careers
-            </p>
+          {/* Logo */}
+          <div className="mb-5">
+            <img
+              src="/images/logo.png"
+              alt="Vesarii"
+              className="h-8 object-contain"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
           </div>
-          <div className="space-y-3">
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Press
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Stockists
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Gift cards
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Sustainability
-            </p>
-            <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent tracking-wide">
-              Shipping
-            </p>
+
+          {/* Address + Contact + Socials LEFT | Nav links RIGHT */}
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+
+            {/* LEFT */}
+            <div className="flex flex-col">
+              <p
+                className="text-sm font-bold text-[#1C1C1C] mb-1"
+                style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.03em' }}
+              >
+                Address:
+              </p>
+              <p className="text-sm text-[#1C1C1C] mb-5 tracking-wide">
+                Vesarii Fragrance House, Paris, France
+              </p>
+
+              <p
+                className="text-sm font-bold text-[#1C1C1C] mb-1"
+                style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.03em' }}
+              >
+                Contact:
+              </p>
+              <p className="text-sm text-[#1C1C1C] tracking-wide">+33 1 23 45 67</p>
+              <p className="text-sm text-[#1C1C1C] mb-6 tracking-wide">contact@vesarii.com</p>
+
+              {/* Social icons */}
+              <div className="flex items-center gap-3">
+                {[
+                  { Icon: FaFacebookF,  label: 'Facebook' },
+                  { Icon: FaInstagram,  label: 'Instagram' },
+                  { Icon: FaYoutube,    label: 'YouTube' },
+                  { Icon: FaLinkedinIn, label: 'LinkedIn' },
+                  { Icon: FaXTwitter,   label: 'X / Twitter' },
+                ].map(({ Icon, label }) => (
+                  <button
+                    key={label}
+                    aria-label={label}
+                    className="w-8 h-8 rounded-full border border-[#1C1C1C] flex items-center justify-center text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-white transition-all duration-200 flex-shrink-0"
+                  >
+                    <Icon size={12} />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT — Two nav columns */}
+            <div className="flex gap-16 md:gap-20">
+              <div className="flex flex-col gap-[12px]">
+                {['Shop', 'About', 'Journal', 'Contact', 'Careers'].map((link) => (
+                  <a
+                    key={link}
+                    href={`/${link.toLowerCase()}`}
+                    className="text-sm text-[#1C1C1C] hover:opacity-60 transition-opacity tracking-wide"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  >
+                    {link}
+                  </a>
+                ))}
+              </div>
+              <div className="flex flex-col gap-[12px]">
+                {['Press', 'Stockists', 'Gift cards', 'Sustainability', 'Shipping'].map((link) => (
+                  <a
+                    key={link}
+                    href={`/${link.toLowerCase().replace(' ', '-')}`}
+                    className="text-sm text-[#1C1C1C] hover:opacity-60 transition-opacity tracking-wide"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  >
+                    {link}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>{/* end dashed box */}
+      </div>
+
+      {/* ── BOTTOM BAR — outside the dashed box ── */}
+      <div className="px-8 md:px-16 lg:px-24">
+        <hr className="border-t border-[#1C1C1C]/20" />
+        <div className="flex flex-col md:flex-row justify-between items-center py-4 gap-3">
+          <p
+            className="text-xs text-[#1C1C1C] tracking-wide"
+            style={{ fontFamily: 'Manrope, sans-serif' }}
+          >
+            © 2024 Vesarii. All rights reserved.
+          </p>
+          <div className="flex gap-6 items-center">
+            {['Privacy policy', 'Terms of service', 'Cookies settings'].map((label) => (
+              <a
+                key={label}
+                href="#"
+                className="text-xs text-[#1C1C1C] hover:opacity-60 transition-opacity whitespace-nowrap tracking-wide"
+                style={{ fontFamily: 'Manrope, sans-serif' }}
+              >
+                {label}
+              </a>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Social Icons */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 border border-[#EFDB94] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#CDAF6E]/10 transition-colors">
-          <FaFacebookF className="text-sm text-[#CDAF6E]" />
-        </div>
-        <div className="w-8 h-8 border border-[#EFDB94] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#CDAF6E]/10 transition-colors">
-          <FaInstagram className="text-sm text-[#CDAF6E]" />
-        </div>
-        <div className="w-8 h-8 border border-[#EFDB94] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#CDAF6E]/10 transition-colors">
-          <FaXTwitter className="text-sm text-[#CDAF6E]" />
-        </div>
-        <div className="w-8 h-8 border border-[#EFDB94] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#CDAF6E]/10 transition-colors">
-          <FaLinkedinIn className="text-sm text-[#CDAF6E]" />
-        </div>
-        <div className="w-8 h-8 border border-[#EFDB94] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#CDAF6E]/10 transition-colors">
-          <FaYoutube className="text-sm text-[#CDAF6E]" />
-        </div>
-      </div>
-
-      {/* Bottom Section */}
-      <div className="flex flex-col md:flex-row justify-between items-center border-t border-[#EFDB94]/30 pt-4 text-xs md:text-[10px]">
-        <p className="bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent md:text-xs lg:text-sm tracking-wider">
-          © 2024 Vesarii. All rights reserved.
-        </p>
-        <div className="flex md:gap-6 lg:gap-8 gap-4 lg:mt-0 md:mt-0 mt-3">
-          <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent md:text-xs lg:text-sm tracking-wide">
-            Privacy policy
-          </p>
-          <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent md:text-xs lg:text-sm tracking-wide">
-            Terms of service
-          </p>
-          <p className="cursor-pointer bg-gradient-to-r from-[#CDAF6E] via-[#E4C77F] to-[#F5E6A1] bg-clip-text text-transparent md:text-xs lg:text-sm tracking-wide">
-            Cookies settings
-          </p>
-        </div>
-      </div>
     </footer>
   );
 };

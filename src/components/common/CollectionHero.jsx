@@ -17,8 +17,10 @@ const CollectionHero = ({ banner, fallbackImage, onBannerClick }) => {
     };
 
     const bannerImage = banner.backgroundImage
-        ? ProductService.constructBannerURL(banner.backgroundImage)
-        : fallbackImage;
+    ? banner.backgroundImage.startsWith('/')
+        ? banner.backgroundImage
+        : ProductService.constructBannerURL(banner.backgroundImage)
+    : fallbackImage;
 
     return (
         <motion.section
@@ -99,7 +101,8 @@ const CollectionHero = ({ banner, fallbackImage, onBannerClick }) => {
                         <motion.div variants={fadeIn("right", 0.6)}>
                             <Button
                                 onClick={handleClick}
-                                className="bg-gradient-to-r from-[#79300f] to-[#5a2408] hover:from-[#5a2408] hover:to-[#79300f] text-white px-7 sm:px-9 py-2.5 sm:py-3 text-xs sm:text-sm font-bold uppercase tracking-widest transition-all duration-500 rounded-none border-none shadow-xl hover:shadow-2xl"
+                                className="text-white px-7 sm:px-9 py-2.5 sm:py-3 text-xs sm:text-sm font-bold uppercase tracking-widest transition-all duration-300 rounded-none border-none"
+                                style={{ backgroundColor: '#C9A020' }}
                             >
                                 <span className="relative z-10">{banner.buttonText}</span>
                             </Button>

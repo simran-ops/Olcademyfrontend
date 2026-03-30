@@ -1,0 +1,1 @@
+- [x] Step 1: Update Header.jsx with dark glass bg-black/20, gold text-gold-500, refined nav typography/tracking/underline (syntax fixed, complete file rewritten).
